@@ -8,4 +8,4 @@ WORKDIR /home/Service
 COPY . /home/Service                   
 RUN npm install                     
 EXPOSE 3000
-CMD npm run start 
+CMD node app 
