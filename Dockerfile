@@ -7,6 +7,5 @@ WORKDIR /home/Service
 # Bundle app source
 COPY . /home/Service                   
 RUN npm install                     
-\     && npm run start
 EXPOSE 3000
-CMD [ "npm", "start" ]
+CMD npm run start 
