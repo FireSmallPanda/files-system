@@ -1,0 +1,29 @@
+{
+  "name": "files-api",
+  "version": "1.0.0",
+  "description": "this is files api by panda",
+  "main": "index.js",
+  "dependencies": {
+    "ali-oss": "^6.0.1",
+    "express": "^4.16.3",
+    "formidable": "^1.2.1",
+    "promise": "^8.0.2",
+    "uuid": "^3.3.2",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "title 文件api && node app",
+    "oss": "title 文件apiOSS && node ossApp"
+  },
+  "keywords": [
+    "files"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FireSmallPanda/nodeapi.git"
+  },
+  "author": "xiaoxiongmao (1020529941@qq.com)",
+  "license": "ISC"
+}

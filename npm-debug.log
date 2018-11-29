@@ -1,0 +1,99 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'E:\\nodejs\\node.exe',
+1 verbose cli   'E:\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   '-g',
+1 verbose cli   'n' ]
+2 info using npm@3.8.9
+3 info using node@v6.2.0
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readGlobalPackageData
+7 silly fetchPackageMetaData n
+8 silly fetchNamedPackageData n
+9 silly mapToRegistry name n
+10 silly mapToRegistry using default registry
+11 silly mapToRegistry registry https://registry.npmjs.org/
+12 silly mapToRegistry data Result {
+12 silly mapToRegistry   raw: 'n',
+12 silly mapToRegistry   scope: null,
+12 silly mapToRegistry   name: 'n',
+12 silly mapToRegistry   rawSpec: '',
+12 silly mapToRegistry   spec: 'latest',
+12 silly mapToRegistry   type: 'tag' }
+13 silly mapToRegistry uri https://registry.npmjs.org/n
+14 verbose request uri https://registry.npmjs.org/n
+15 verbose request no auth needed
+16 info attempt registry request try #1 at 17:43:00
+17 verbose request id b8bd718b3bc31f4b
+18 verbose etag W/"794fec4ca3d45c86a55b552d4a0e3ec8"
+19 verbose lastModified Fri, 03 Aug 2018 00:36:01 GMT
+20 http request GET https://registry.npmjs.org/n
+21 http 304 https://registry.npmjs.org/n
+22 verbose headers { date: 'Fri, 05 Oct 2018 09:42:40 GMT',
+22 verbose headers   connection: 'keep-alive',
+22 verbose headers   'set-cookie': [ '__cfduid=d15f919f39d7b49d4ab10bd055f4e7c391538732560; expires=Sat, 05-Oct-19 09:42:40 GMT; path=/; domain=.registry.npmjs.org; HttpOnly' ],
+22 verbose headers   'cf-cache-status': 'HIT',
+22 verbose headers   'cache-control': 'max-age=300',
+22 verbose headers   'cf-ray': '464ef0898fd52228-LAX',
+22 verbose headers   etag: '"794fec4ca3d45c86a55b552d4a0e3ec8"',
+22 verbose headers   'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+22 verbose headers   'last-modified': 'Fri, 03 Aug 2018 00:36:01 GMT',
+22 verbose headers   vary: 'accept-encoding, accept',
+22 verbose headers   server: 'cloudflare' }
+23 silly get cb [ 304,
+23 silly get   { date: 'Fri, 05 Oct 2018 09:42:40 GMT',
+23 silly get     connection: 'keep-alive',
+23 silly get     'set-cookie': [ '__cfduid=d15f919f39d7b49d4ab10bd055f4e7c391538732560; expires=Sat, 05-Oct-19 09:42:40 GMT; path=/; domain=.registry.npmjs.org; HttpOnly' ],
+23 silly get     'cf-cache-status': 'HIT',
+23 silly get     'cache-control': 'max-age=300',
+23 silly get     'cf-ray': '464ef0898fd52228-LAX',
+23 silly get     etag: '"794fec4ca3d45c86a55b552d4a0e3ec8"',
+23 silly get     'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+23 silly get     'last-modified': 'Fri, 03 Aug 2018 00:36:01 GMT',
+23 silly get     vary: 'accept-encoding, accept',
+23 silly get     server: 'cloudflare' } ]
+24 verbose etag https://registry.npmjs.org/n from cache
+25 verbose get saving n to C:\Users\Administrator\AppData\Roaming\npm-cache\registry.npmjs.org\n\.cache.json
+26 verbose correctMkdir C:\Users\Administrator\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+27 silly install normalizeTree
+28 silly loadCurrentTree Finishing
+29 silly loadIdealTree Starting
+30 silly install loadIdealTree
+31 silly cloneCurrentTree Starting
+32 silly install cloneCurrentTreeToIdealTree
+33 silly cloneCurrentTree Finishing
+34 silly loadShrinkwrap Starting
+35 silly install loadShrinkwrap
+36 silly loadShrinkwrap Finishing
+37 silly loadAllDepsIntoIdealTree Starting
+38 silly install loadAllDepsIntoIdealTree
+39 silly rollbackFailedOptional Starting
+40 silly rollbackFailedOptional Finishing
+41 silly runTopLevelLifecycles Starting
+42 silly runTopLevelLifecycles Finishing
+43 silly install printInstalled
+44 verbose stack Error: Unsupported platform for n@2.1.12: wanted {"name":"n","description":"Interactively Manage All Your Node Versions","version":"2.1.12","author":{"name":"TJ Holowaychuk","email":"tj@vision-media.ca"},"homepage":"https://github.com/tj/n","bugs":{"url":"https://github.com/tj/n/issues"},"contributors":[{"name":"Travis Webb","email":"me@traviswebb.com","url":"tjw.io"},{"name":"Nimit Kalra","email":"me@nimit.io","url":"http://nimit.io"},{"name":"Troy Connor","email":"troy0820@gmail.com","url":"https://github.com/troy0820"}],"keywords":["nvm","node","version","manager","switcher","node","binary","env"],"bin":{"n":"./bin/n"},"repository":{"type":"git","url":"git://github.com/tj/n.git"},"preferGlobal":true,"os":["!win32"],"engines":{"node":"*"},"license":"MIT","gitHead":"8ad6cd3bc76fc674f7faf3d8cf2f4d6e7d1849c3","_id":"n@2.1.12","_npmVersion":"6.0.1","_nodeVersion":"8.11.2","_npmUser":{"name":"troy0820","email":"troy0820@gmail.com"},"dist":{"integrity":"sha512-LbdmVo3utWB0njvNAsEHZxMesZmUBOH54VOzGpywqi03huCmi0bsSyigKCLrBxlnvlcz4Nahwt342f6w9YU3Cg==","shasum":"7bca5e103bfe3632d4c1a70dfaf9ecf774c18aed","tarball":"https://registry.npmjs.org/n/-/n-2.1.12.tgz","fileCount":7,"unpackedSize":30247,"npm-signature":"-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJbHrp7CRA9TVsSAnZWagAAB1sP/3rWkLGMALGKzwjTPOKg\nVTqCSUL3Az1ihVlgplTvMLauz3xNo7eu6NfDDWotQGm2S/CYT4s5cC++xK/r\nF92PvMFIdnI+YSHZTdLvZpryOvyhHMh5NYM3ARhIt3YIC7nOkTVFVa1XkuUI\n0sp+vmIZrUZvzIEihVwHVxb5INxZVMh8NB6WZxVstRNmOl0/SgnSK2NLM1qy\nr7pgMjJWICF42ltXwVlRKaqCKeRpNJAvSMxBHaDFbKgmoXd37d7BsDc/qv0+\nQJZ2oHyKInimnUxKfY6pw702SyoQKsZvWflkTlVxjEMOjjRpXRKERFiWrRTH\nxEuQ7Jz7SsMRERJetsTpKPnS+OTyxioXtJmod4+Qy2AV6LS7q+h5NxLEzli8\nLdlbJP0MTJECJryeAl0OJbInoybp3MBmyAZ045TUbqwS/nzQtxNuEAJXHiqK\nYDtoFQjASiAAkjavrdb9yXiuyPPDK4HTvhlD3vTnr29dpxTUSAauvZ+a8E/Z\n+iNRw2NrZuor97NJ9Eltt80GWYgsCNACQGcfYk+7BS7YsAmco/KCSYH7TjVT\nnX7r1FjkHCmLnkkveJvsyEY3E8xTc4/e7YCkJIdXBTNZUgMDUWFqzB8lIA5y\noMIfkxiTchZpY8m6jSmPta/UZU4LyixYnmYslLSNPhj7KSidOtP3peKowy9D\nAW+0\r\n=Tct9\r\n-----END PGP SIGNATURE-----\r\n"},"maintainers":[{"name":"bat","email":"ben@benatkin.com"},{"name":"qw3rtman","email":"me@nimit.io"},{"name":"tedgaydos","email":"tedgaydos@gmail.com"},{"name":"tjholowaychuk","email":"tj@vision-media.ca"},{"name":"tjwebb","email":"me@traviswebb.com"},{"name":"troy0820","email":"troy0820@gmail.com"}],"directories":{},"_npmOperationalInternal":{"host":"s3://npm-registry-packages","tmp":"tmp/n_2.1.12_1528740474170_0.4363494946487372"},"_from":"n","_resolved":"https://registry.npmjs.org/n/-/n-2.1.12.tgz","_shasum":"7bca5e103bfe3632d4c1a70dfaf9ecf774c18aed","_requested":{"raw":"n","scope":null,"name":"n","rawSpec":"","spec":"latest","type":"tag"},"_spec":"n","_where":"","_args":[["n",""]],"readme":"ERROR: No README data found!"} (current: {"os":"win32","cpu":"x64"})
+44 verbose stack     at checkPlatform (E:\nodejs\node_modules\npm\node_modules\npm-install-checks\index.js:45:14)
+44 verbose stack     at thenWarnEngineIssues (E:\nodejs\node_modules\npm\lib\install\validate-args.js:41:5)
+44 verbose stack     at E:\nodejs\node_modules\npm\node_modules\iferr\index.js:13:50
+44 verbose stack     at checkEngine (E:\nodejs\node_modules\npm\node_modules\npm-install-checks\index.js:24:10)
+44 verbose stack     at module.exports.isInstallable (E:\nodejs\node_modules\npm\lib\install\validate-args.js:38:3)
+44 verbose stack     at Array.<anonymous> (E:\nodejs\node_modules\npm\node_modules\slide\lib\bind-actor.js:15:8)
+44 verbose stack     at LOOP (E:\nodejs\node_modules\npm\node_modules\slide\lib\chain.js:15:14)
+44 verbose stack     at E:\nodejs\node_modules\npm\node_modules\slide\lib\chain.js:18:7
+44 verbose stack     at checkSelf (E:\nodejs\node_modules\npm\lib\install\validate-args.js:46:72)
+44 verbose stack     at Array.<anonymous> (E:\nodejs\node_modules\npm\node_modules\slide\lib\bind-actor.js:15:8)
+45 verbose pkgid n@2.1.12
+46 verbose cwd D:\GitDou\新建文件夹\nodeapi\files-api
+47 error Windows_NT 6.1.7601
+48 error argv "E:\\nodejs\\node.exe" "E:\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "-g" "n"
+49 error node v6.2.0
+50 error npm  v3.8.9
+51 error code EBADPLATFORM
+52 error notsup Not compatible with your operating system or architecture: n@2.1.12
+53 error notsup Valid OS:    !win32
+53 error notsup Valid Arch:  any
+53 error notsup Actual OS:   win32
+53 error notsup Actual Arch: x64
+54 verbose exit [ 1, true ]
