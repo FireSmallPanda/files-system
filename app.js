@@ -2,11 +2,13 @@ let express = require("express")
 let app = express()
 let router = require(__dirname+"/controller/router")
 let configUtil = require(__dirname+"/config/configUtil")
-const fs = require("fs")
 // 获取配置文件
 let configs = configUtil.configObj;
 // 接口名字
 let apiName = configs.NAME
+// 校验文件中间件
+app.use(`${apiName}/`,router.loadDefault)
+
 // 主页 F0001
 app.get(`${apiName}/`,router.showIndex)
 // 保存单个文件 F0002

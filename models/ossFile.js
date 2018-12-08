@@ -1,5 +1,7 @@
 // 获取配置文件
 let configUtil = require("../config/configUtil");
+// OSS工具类
+let ossUtil = require("../config/ossUtil");
 let configs = configUtil.configObj;
 const fs = require("fs");
 var Promise = require('promise');
@@ -10,7 +12,7 @@ let path = require("path");
 const uuidv1 = require('uuid/v1');
 var stream = require('stream');
 // oss连接池
-let ossClient = configUtil.ossClient
+let ossClient = ossUtil.ossClient
 
 // oss保存文件
 async function put(onlinePath, localPath,callback) {

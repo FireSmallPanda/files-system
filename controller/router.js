@@ -30,3 +30,10 @@ exports.deleteDocument = (req, res) => {
 exports.getFile = (req, res) => {
     file.getFile(req, res)
 }
+// 默认中间件
+exports.loadDefault = (req, res,next) => {
+    // 1.查看文件夹是否存在
+    Promise.all([file.checkDocumentAndCreat(req, res)]).then(()=>{
+        next()
+    })
+}

@@ -69,7 +69,6 @@ exports.saveOneFile = (req, res) => {
                 // ran = ran.replaceAll("-","")
                 // 拓展名
                 let extname = path.extname(files.file.name)
-                console.log(files.file)
                 // 新路径
                 let newPath = `${configs.FILEPATH}${fields.document}/${ran}${extname}`
                 // 执行改名
@@ -186,7 +185,7 @@ let deleteFolderRecursive = (path, callback) => {
     }
 }
 
-
+// 获取文件
 exports.getFile = (req, res) => {
     let uri = encodeURI(req.url)
     let form = url.parse(uri, true).query
@@ -195,7 +194,6 @@ exports.getFile = (req, res) => {
     // 文件路径
     let path = configs.FILEPATH + form.path
     let name = form.name
-    console.log(name)
     fs.exists(path, (exists) => {
         if (!exists) {
             // 若不存在则报错
@@ -214,4 +212,34 @@ exports.getFile = (req, res) => {
             f.pipe(res)
         }
     })
+}
+
+/**
+- 查看文件夹是否存在 
+- @param req {Object} 输入请求
+- @param res {Object} 输出请求
+- @return 结果
+- @author weihao_ling<1020529941@qq.com>
+- @example
+- D:/a   is exists no action
+-        is not exists creat D:/a
+*/
+exports.checkDocumentAndCreat = (req,res)=>{
+    return new Promise(( resolve, req,res)=>{
+        // 获取配置路径
+        let path = configs.FILEPATH
+        // 判断是否存在
+        fs.exists(path, (exists) => {
+            if (!exists) {
+                // 创建文件夹
+                fs.mkdir(path, (err) => {
+                    if (err) {
+                        return console.error(err)
+                    }
+                })
+            }
+            resolve('文件初始化完成')
+        })
+    })
+    
 }
