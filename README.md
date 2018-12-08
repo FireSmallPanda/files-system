@@ -20,11 +20,31 @@ npm run oss
 > nodeapi\files-api\config\文件上传微服务接口.postman_collection.json 用于导入postman生成接口
 
 ### 文件上传接口
-
-    files-api
-    ├── config                   # Compiled files (alternatively `dist`)
-    ├── controller                    # Documentation files (alternatively `doc`)
-    ├── models                     # Source files (alternatively `lib` or `app`)
-    └── README.md
+FILE-SYSTEM
+│  .eslintrc.js 
+│  .gitignore
+│  Dockerfile  # Docker 配置文件
+│  README.md
+│  app.js  # 程序主入口
+│  ossApp.js
+│  package-lock.json
+│  package.json
+│  test.js
+│  yarn.lock
+│  文件上传微服务接口.postman_collection.json # 接口位置
+│
+├─config # 配置层
+│      configUtil.js
+│      dev.yml
+│      msg.yml
+│      ossUtil.js
+│
+├─controller # controller 层
+│      ossController.js
+│      router.js
+│
+└─models  # models 层
+        file.js
+        ossFile.js
     
 ### Source files
