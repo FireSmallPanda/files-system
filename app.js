@@ -22,4 +22,12 @@ app.delete(`${apiName}/document`,router.deleteDocument)
 // 下载单个文件 F0006
 app.get(`${apiName}/file`,router.getFile)
 console.log(`启动端口为：${configs.PORT}`)
+// 监听未捕获的异常
+process.on('uncaughtException',(err)=>{
+    console.log(err)
+}) 
+// 监听Promise没有被捕获的失败函数
+process.on('unhandledRejection',(err,promise)=>{
+    console.log(err)
+}) 
 app.listen(configs.PORT)
