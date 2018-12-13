@@ -21,6 +21,8 @@ app.post(`${apiName}/document`,router.createDocument)
 app.delete(`${apiName}/document`,router.deleteDocument)
 // 下载单个文件 F0006
 app.get(`${apiName}/file`,router.getFile)
+// 删除单个文件 F0007
+app.delete(`${apiName}/file`,router.deleteFile)
 console.log(`启动端口为：${configs.PORT}`)
 // 监听未捕获的异常
 process.on('uncaughtException',(err)=>{
