@@ -245,7 +245,6 @@ exports.checkDocumentAndCreat = (req,res)=>{
 }
  // 删除单个文件
 exports.deleteFile = (req,res) =>{
-
     // parse a file upload
     let form = new formidable.IncomingForm()
     //    Creates a new incoming form.
@@ -256,10 +255,12 @@ exports.deleteFile = (req,res) =>{
         }
         // 获取删除文件文件路径
         let deleteUrl =  configs.FILEPATH + fields.url
-        deleteOneFile(deleteUrl,(retn)=>{
+        deleteOneFile(deleteUrl,(retn,msg)=>{
                 let content = {}
                 content.success = retn
-                content.message = `aaa`
+                if(!retn){
+                    content.message = msg
+                }
                 res.writeHead(200, { 'Content-Type': 'application/json' })
                 res.end(JSON.stringify(content))
         })
@@ -272,40 +273,22 @@ exports.deleteFile = (req,res) =>{
 - @return 结果
 - @author weihao_ling<1020529941@qq.com>
 - @example
--
+- D:/aaa/aaa.txt  => D:/aaa/
+  the aaa.txt is delete
 */
 let deleteOneFile = (url,callback) =>{
         var files = [];
         //判断给定的路径是否存在
         if( fs.existsSync(url) ) {
             if(fs.statSync(url).isDirectory()) { // recurse
-                console.log("请给出一个文件");
-                callback(false)
+                callback(false,`${msgs.F_0006}`)
             // 是文件delete file
             } else {
                 fs.unlinkSync(url);
                 callback(true)
             }
-        
         }else{
-            console.log("给定的路径不存在，请给出正确的路径");
-            callback(false)
+            callback(false,`${msgs.F_0004}`)
         }
     
-  };
-
-function deleteall(path) {
-	var files = [];
-	if(fs.existsSync(path)) {
-		files = fs.readdirSync(path);
-		files.forEach(function(file, index) {
-			var curPath = path + "/" + file;
-			if(fs.statSync(curPath).isDirectory()) { // recurse
-				deleteall(curPath);
-			} else { // delete file
-				fs.unlinkSync(curPath);
-			}
-		});
-		fs.rmdirSync(path);
-	}
-};
+  }

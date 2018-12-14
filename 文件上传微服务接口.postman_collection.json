@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b58018f4-bdb2-463e-a869-4f705bc10573",
+		"_postman_id": "6d3d89d5-0c60-47f4-800b-ba4e8b7a1332",
 		"name": "文件上传微服务接口",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -10,7 +10,10 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "{{urls}}",
 					"host": [
@@ -32,7 +35,8 @@
 						{
 							"key": "file",
 							"description": "上传文件",
-							"type": "file"
+							"type": "file",
+							"src": ""
 						},
 						{
 							"key": "document",
@@ -55,6 +59,36 @@
 			},
 			"response": [
 				{
+					"name": "filesApi",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "localhost:3000",
+								"value": "url",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:3000",
+							"host": [
+								"localhost"
+							],
+							"port": "3000"
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				},
+				{
 					"name": "保存文件(F0002)",
 					"originalRequest": {
 						"method": "POST",
@@ -72,9 +106,7 @@
 									"key": "file",
 									"description": "上传文件",
 									"type": "file",
-									"src": {
-										"0": {}
-									}
+									"src": null
 								},
 								{
 									"key": "document",
@@ -138,33 +170,6 @@
 					],
 					"cookie": [],
 					"body": "{\"success\":true,\"url\":\"D:/GitDou/asd/28494.msg\",\"name\":\"unins001.msg.msg\"}"
-				},
-				{
-					"name": "filesApi",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "localhost:3000",
-								"value": "url",
-								"disabled": true
-							}
-						],
-						"body": {},
-						"url": {
-							"raw": "localhost:3000",
-							"host": [
-								"localhost"
-							],
-							"port": "3000"
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "",
-					"header": [],
-					"cookie": [],
-					"body": ""
 				}
 			]
 		},
@@ -173,7 +178,10 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "{{urls}}/document/list",
 					"host": [
@@ -192,7 +200,10 @@
 					"originalRequest": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{urls}}/document/list",
 							"host": [
@@ -410,7 +421,7 @@
 						},
 						{
 							"key": "Date",
-							"value": "Wed, 10 Oct 2018 14:32:17 GMT",
+							"value": "Fri, 05 Oct 2018 06:27:32 GMT",
 							"name": "Date",
 							"description": "The date and time that the message was sent"
 						},
@@ -474,7 +485,7 @@
 						},
 						{
 							"key": "Date",
-							"value": "Fri, 05 Oct 2018 06:27:32 GMT",
+							"value": "Wed, 10 Oct 2018 14:32:17 GMT",
 							"name": "Date",
 							"description": "The date and time that the message was sent"
 						},
@@ -501,7 +512,10 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "{{urls}}/file?path=/asd/aaa.jpg&name=asd.jpg",
 					"host": [
@@ -531,7 +545,10 @@
 					"originalRequest": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{urls}}/file?path=/asd/aaa.jpg&name=asd.jpg",
 							"host": [
@@ -605,14 +622,8 @@
 				"method": "GET",
 				"header": [],
 				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "sa",
-							"value": "",
-							"type": "file"
-						}
-					]
+					"mode": "raw",
+					"raw": ""
 				},
 				"url": {
 					"raw": "{{urloss}}",
@@ -632,8 +643,8 @@
 							"formdata": [
 								{
 									"key": "sa",
-									"value": "",
-									"type": "file"
+									"type": "file",
+									"src": ""
 								}
 							]
 						},
@@ -696,7 +707,7 @@
 							"key": "file",
 							"description": "文件",
 							"type": "file",
-							"value": ""
+							"src": ""
 						},
 						{
 							"key": "document",
@@ -730,9 +741,7 @@
 									"key": "file",
 									"description": "文件",
 									"type": "file",
-									"src": {
-										"0": {}
-									}
+									"src": null
 								},
 								{
 									"key": "document",
@@ -797,7 +806,10 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "{{urloss}}/document/list",
 					"host": [
@@ -940,7 +952,10 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "{{urloss}}/file?path=/asd/readme.txt&name=查看我.txt",
 					"host": [
@@ -970,7 +985,10 @@
 					"originalRequest": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{urloss}}/file?path=/asd/readme.txt&name=查看我.txt",
 							"host": [
@@ -1042,7 +1060,10 @@
 					"originalRequest": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{urloss}}/file?path=/asd/readme.txt&name=查看我.txt",
 							"host": [
@@ -1108,6 +1129,89 @@
 					],
 					"cookie": [],
 					"body": "本微服务由小熊猫提供技术支持1020529941@qq.com"
+				}
+			]
+		},
+		{
+			"name": "删除文件(F0007)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "url",
+							"value": "aaa/aaa.txt",
+							"description": "删除的文件路径",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{urls}}/file",
+					"host": [
+						"{{urls}}"
+					],
+					"path": [
+						"file"
+					]
+				},
+				"description": "aaa"
+			},
+			"response": [
+				{
+					"name": "删除文件(F0007)",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "url",
+									"value": "aaa/aaa.txt",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{urls}}/file",
+							"host": [
+								"{{urls}}"
+							],
+							"path": [
+								"file"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 14 Dec 2018 03:48:07 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"message\": \"该路径为文件夹路径,请输入文件路径!\"\n}"
 				}
 			]
 		}
