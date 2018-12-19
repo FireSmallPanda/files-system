@@ -8,6 +8,17 @@ let configs = configUtil.configObj;
 let apiName = configs.NAME
 // 校验文件中间件
 app.use(`${apiName}/`,router.loadDefault)
+//设置跨域访问
+if(configs.ALLOW_ORIGIN){
+    app.all('*', function(req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "X-Requested-With");
+        res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+        res.header("X-Powered-By",' 3.2.1')
+        res.header("Content-Type", "application/json;charset=utf-8");
+        next();
+    })
+}
 
 // 主页 F0001
 app.get(`${apiName}/`,router.showIndex)

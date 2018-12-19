@@ -1,5 +1,7 @@
 ##端口号
 PORT: 3000
+##是否允许跨域
+ALLOW_ORIGIN: true 
 #项目名字前缀
 NAME: /files-api
 #文件传入路径
