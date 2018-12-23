@@ -2,10 +2,12 @@
 PORT: 3000
 ##是否允许跨域
 ALLOW_ORIGIN: true 
-#项目名字前缀
+## 文件间隔符
+FILE_SPLIT: $@$
+##项目名字前缀
 NAME: /files-api
-#文件传入路径
-FILEPATH: D:/GitDou/
+##文件传入路径
+FILEPATH: D:/fileUpload/
 #文件大小
 FILESIZE: 1024000
 #模式 master 在保存文件时自动创建文件夹 guest 在保存文件时不自动创建文件夹

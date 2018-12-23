@@ -37,6 +37,11 @@ exports.getFile = (req, res) => {
 exports.deleteFile = (req, res) => {
     file.deleteFile(req, res)
 }
+// 删除文件
+exports.getFilePackage = (req, res) => {
+    file.getFilePackage(req, res)
+}
+
 // 默认中间件
 exports.loadDefault = (req, res,next) => {
     

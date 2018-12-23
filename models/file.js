@@ -1,5 +1,6 @@
 // 获取配置文件
 let configUtil = require('../config/configUtil')
+let filesUtil = require('../utils/filesUtil')
 let configs = configUtil.configObj
 const fs = require('fs')
 let formidable = require('formidable')
@@ -7,18 +8,22 @@ let msgs = configUtil.msgObj
 var url = require('url')
 let path = require('path')
 const uuidv1 = require('uuid/v1')
-
+var Promise = require('promise')
 
 //创建目录结构
-function mkdirs(filePath) {
-    if (fs.existsSync(filePath)) {
-        return true
-    }
-    if (!fs.existsSync(path.dirname(filePath))) {
-        mkdir(path.dirname(filePath))
-    }
-    fs.mkdirSync(filePath)
-};
+//递归创建目录 异步方法
+function mkdirs(dirname, callback) {
+    fs.exists(dirname, function (exists) {
+        if (exists) {
+            callback();
+        } else {
+            //console.log(path.dirname(dirname));
+            mkdirs(path.dirname(dirname), function () {
+                fs.mkdir(dirname, callback);
+            });
+        }
+    });
+}
 exports.saveOneFile = (req, res) => {
     // parse a file upload
     let form = new formidable.IncomingForm()
@@ -267,6 +272,65 @@ exports.deleteFile = (req,res) =>{
     })
     
 }
+// 获取打包文件
+exports.getFilePackage = (req,res)=>{
+    let form = new formidable.IncomingForm()
+    //    Creates a new incoming form.
+    form.encoding = 'utf-8'
+    form.parse(req, (err, fields, files, next) => {
+        if (err) {
+            throw err
+        }
+        // 文件列表
+        let filesList = fields.urls.split(configs.FILE_SPLIT)
+        // 名字列表
+        let nameList = fields.names.split(configs.FILE_SPLIT)
+        // 随机数
+        let ran = uuidv1()
+
+        // 创建一个新文件夹
+        mkdirs(`${configs.FILEPATH}${ran}/files` ,(dirName)=>{
+            // console.log(dirName)
+            // if(dirName==null){
+            //     return
+            // }
+            copyFile(filesList,nameList,ran,(retn)=>{
+                console.log(2)
+                filesUtil.fileToPackage(`${configs.FILEPATH}${ran}/files`,`${configs.FILEPATH}${ran}/pak.zip`)
+                   
+                let content = {}
+                content.success = true
+                res.writeHead(200, { 'Content-Type': 'application/json' })
+                console.log(filesList)
+                res.end(JSON.stringify(content))
+            })
+           
+        })        
+    })
+}
+/**
+ * 拷贝多个文件
+ * @param {List<String>} filesList 
+ * @param {List<String>} nameList 
+ * @param {String} ran 
+ * @param {Function} callback 
+ */
+let copyFile = (filesList,nameList,ran,callback) => {    
+    // 循环拷贝文件夹到新文件夹里面去
+    filesList.forEach((fileItem,index)=>{
+            // 拷贝文件夹
+            copyIt(`${configs.FILEPATH}${fileItem}`,`${configs.FILEPATH}${ran}/files/${nameList[index]}`)
+    })
+    console.log(1)
+    callback(true)
+}
+let readFile = (function (err, data) {
+ 
+    if (err) return console.error(err)
+    
+    console.log(data)
+    
+   })
 /**
 - 删除单个文件
 - @param url {String} 删除的文件路径
@@ -292,3 +356,17 @@ let deleteOneFile = (url,callback) =>{
         }
     
   }
+   /**
+    * 拷贝文件
+    * @param {String} from 从哪里来
+    * @param {String} to 到哪里去
+    * @example
+    D:/aaa/aaa.txt,D:/aaa/bbb.txt copy a => b
+    */
+   let copyIt = (from, to,pakFlag=false) => {
+    fs.writeFileSync(to, fs.readFileSync(from))
+    if(pakFlag){
+
+    }
+   }
+    
