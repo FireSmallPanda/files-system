@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6d3d89d5-0c60-47f4-800b-ba4e8b7a1332",
+		"_postman_id": "964d6183-b79d-49f7-8a70-bd0029ef08f4",
 		"name": "文件上传微服务接口",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -40,7 +40,7 @@
 						},
 						{
 							"key": "document",
-							"value": "asddsfsdas0001223",
+							"value": "sa/asd/",
 							"description": "文件夹名称",
 							"type": "text"
 						}
@@ -58,36 +58,6 @@
 				"description": "2222"
 			},
 			"response": [
-				{
-					"name": "filesApi",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "localhost:3000",
-								"value": "url",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "localhost:3000",
-							"host": [
-								"localhost"
-							],
-							"port": "3000"
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "Text",
-					"header": [],
-					"cookie": [],
-					"body": ""
-				},
 				{
 					"name": "保存文件(F0002)",
 					"originalRequest": {
@@ -170,6 +140,36 @@
 					],
 					"cookie": [],
 					"body": "{\"success\":true,\"url\":\"D:/GitDou/asd/28494.msg\",\"name\":\"unins001.msg.msg\"}"
+				},
+				{
+					"name": "filesApi",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "localhost:3000",
+								"value": "url",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:3000",
+							"host": [
+								"localhost"
+							],
+							"port": "3000"
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
 				}
 			]
 		},
@@ -421,7 +421,7 @@
 						},
 						{
 							"key": "Date",
-							"value": "Fri, 05 Oct 2018 06:27:32 GMT",
+							"value": "Wed, 10 Oct 2018 14:32:17 GMT",
 							"name": "Date",
 							"description": "The date and time that the message was sent"
 						},
@@ -485,7 +485,7 @@
 						},
 						{
 							"key": "Date",
-							"value": "Wed, 10 Oct 2018 14:32:17 GMT",
+							"value": "Fri, 05 Oct 2018 06:27:32 GMT",
 							"name": "Date",
 							"description": "The date and time that the message was sent"
 						},
@@ -1214,6 +1214,50 @@
 					"body": "{\n    \"success\": false,\n    \"message\": \"该路径为文件夹路径,请输入文件路径!\"\n}"
 				}
 			]
+		},
+		{
+			"name": "打包下载文件(F0008)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "urls",
+							"value": "a/a.txt$@$b/b.txt",
+							"description": "所需要的文件列表",
+							"type": "text"
+						},
+						{
+							"key": "names",
+							"value": "d.txt$@$c.txt",
+							"description": "文件下载本地名称",
+							"type": "text"
+						},
+						{
+							"key": "packageName",
+							"value": "aa包.rar",
+							"description": "打包后的名字",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{urls}}/files",
+					"host": [
+						"{{urls}}"
+					],
+					"path": [
+						"files"
+					]
+				},
+				"description": "打包下载文件"
+			},
+			"response": []
 		}
 	]
 }
