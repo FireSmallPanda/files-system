@@ -1,13 +1,14 @@
 // 获取配置文件
 let configUtil = require('../config/configUtil')
 let filesUtil = require('../utils/filesUtil')
+let commonUtil = require('../utils/commonUtil')
+let dbUtil = require('../utils/dbUtil')
 let configs = configUtil.configObj
 const fs = require('fs')
 let formidable = require('formidable')
 let msgs = configUtil.msgObj
 var url = require('url')
 let path = require('path')
-const uuidv1 = require('uuid/v1')
 var Promise = require('promise')
 //创建目录结构
 //递归创建目录 异步方法
@@ -69,8 +70,10 @@ exports.saveOneFile = (req, res) => {
                 // 随机日期 
                 //  let date = sd.format(new Date(), 'YYYYMMDDHHmmss');
                 // 随机数
-                let ran = uuidv1() //  parseInt(Math.random() * 89999 + 10000);
+                let ran = commonUtil.creatUUID() //  parseInt(Math.random() * 89999 + 10000);
                 // ran = ran.replaceAll("-","")
+                // 随机id（存入数据库）
+                let ranId = commonUtil.creatUUID(4)
                 // 拓展名
                 let extname = path.extname(files.file.name)
                 // 新路径
@@ -82,8 +85,10 @@ exports.saveOneFile = (req, res) => {
                     }
                     let content = {}
                     content.success = true
-                    content.url = `${fields.document}/${ran}${extname}`
+                    content.url = `${fields.document}/${ran}${extname}` // 即将删除
                     content.name = files.file.name
+                    content.id = ranId
+                    dbUtil(content.id,content)
                     res.writeHead(200, { 'Content-Type': 'application/json' })
                     res.end(JSON.stringify(content))
                 })
@@ -198,7 +203,6 @@ exports.getFile = (req, res) => {
     // 文件路径
     let path = decodeURIComponent(configs.FILEPATH + form.path)   //encodeURI(configs.FILEPATH + form.path)
     let name = form.name
-    console.log(path)
     fs.exists(path, (exists) => {
         if (!exists) {
             // 若不存在则报错
@@ -287,8 +291,8 @@ exports.getFilePackage = (req,res)=>{
         // 名字列表
         let nameList = fields.names.split(configs.FILE_SPLIT)
         // 随机数
-        let ran = uuidv1()
-
+        let ran = commonUtil.creatUUID()
+        
         // 创建一个新文件夹
         mkdirs(`${configs.FILEPATH}${ran}/${fields.packageName}` ,(dirName)=>{
             // console.log(dirName)
@@ -300,7 +304,7 @@ exports.getFilePackage = (req,res)=>{
                 let param = {
                     srcFilePath:`${configs.FILEPATH}${ran}`,
                     zipFileName:`${fields.packageName}`,
-                    password:'123456'
+                    password:'123456' // 压缩密码
                 }
                 // 压缩
                 filesUtil.zip(param,(pakRetn)=>{
@@ -308,6 +312,8 @@ exports.getFilePackage = (req,res)=>{
                     if(pakRetn.success){
                         // 替换掉默认路径
                         content.path = '/'+content.path.replace(`${configs.FILEPATH}`,'')
+                        let ranid  =   commonUtil.creatUUID(4)
+                        content.id = ranid
                     }
                     res.writeHead(200, { 'Content-Type': 'application/json' })
                     res.end(JSON.stringify(content))

@@ -1,3 +1,6 @@
+/**
+ * 文件相关util
+ */
 var fs = require("fs");
 var exec = require('child_process').exec;
 /**

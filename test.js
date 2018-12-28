@@ -1,36 +1,70 @@
-var fs = require("fs");
-var exec = require('child_process').exec;
-/**
- * 压缩文件(Zip)
- * @param {Object} param 
- * @param {Function} next 
- */
-let zip = function(param,next){
-    var cdStr = param.srcFilePath.split('/')[0];
-    var cdStr2 = `cd ${param.srcFilePath}`
-    var pakStr = `zip -q -r ${param.srcFilePath}/${param.zipFileName}.zip ${param.zipFileName}`
-    console.log(pakStr)
-    fs.exists(param.srcFilePath, function(exists) {  //判断路径是否存在
-        if(exists) {
-            let content = {
-                success:true,
-                path:`${param.srcFilePath}/${param.zipFileName}.zip`
-            }
-            exec(cdStr +" & "+ cdStr2+" & "+pakStr,next(content));
-        } else {
-            next({
-                success:false,
-                message:"源文件找不到"
-            })
-        }
+var http = require('http');
+ 
+// http.createServer(function (request, response) {
+ 
+//     // 发送 HTTP 头部 
+//     // HTTP 状态值: 200 : OK
+//     // 内容类型: text/plain
+//     response.writeHead(200, {'Content-Type': 'text/plain'});
+ 
+//     // 发送响应数据 "Hello World"
+//     // response.end('Hello World\n');
+// }).listen(8888);
+ 
+// // 终端打印如下信息
+// console.log('Server running at http://127.0.0.1:8888/');
+// 
+ 
+ 
+// redis 链接
+var redis   = require('redis');
+var client  = redis.createClient('6379', '127.0.0.1');
+var RDS_PWD = '1234567'
+
+
+let getConnect = ()=>{
+     // redis 链接错误
+    client.auth(RDS_PWD, function(error) {
+        console.log(error);
     });
+    // redis 链接错误
+    client.on("error", function(error) {
+        console.log(error);
+    });
+
+    return client
 }
-let pa = {
-  password:'123456',
-  zipFileName:'张华德',
-  srcFilePath:'D:/fileUpload/076f9a00-06c1-11e9-9bbd-71be4d510483/'
+exports.setValue = ()=>{
+
 }
-zip(pa,(retn)=>{
-  console.log(retn.success)
-  console.log(retn.path)
-})
+//存值
+// client.select('15', function(error){
+//     if(error) {
+//         console.log(error);
+//     } else {
+//         // set
+//         client.set('er', 'tt', function(error, res) {
+//             if(error) {
+//                 console.log(error);
+//             } else {
+//                 console.log(res);
+//             }
+ 
+//             // 关闭链接
+//             client.end();
+//         });
+//     }
+// });
+ 
+client.get("vvv",function(err,response){
+    console.log(err,response); //will print lee
+});
+let user = {
+    name:'小米',
+    value:'asd',
+    age:15
+}
+console.log(JSON.stringify(user))
+client.set("vvv",JSON.stringify(user),function(err,response){
+    console.log(err,response); //will print lee
+});

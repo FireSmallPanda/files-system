@@ -40,7 +40,7 @@
 						},
 						{
 							"key": "document",
-							"value": "sa/asd/",
+							"value": "sa/sa/",
 							"description": "文件夹名称",
 							"type": "text"
 						}
@@ -517,7 +517,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{urls}}/file?path=/a/a.txt&name=asd.jpg",
+					"raw": "{{urls}}/file?path=/b8604bc0-0a54-11e9-8c4e-c708284d1783/aa包.zip&name=aa.zip",
 					"host": [
 						"{{urls}}"
 					],
@@ -527,12 +527,12 @@
 					"query": [
 						{
 							"key": "path",
-							"value": "/a/a.txt",
+							"value": "/b8604bc0-0a54-11e9-8c4e-c708284d1783/aa包.zip",
 							"description": "相对路径"
 						},
 						{
 							"key": "name",
-							"value": "asd.jpg",
+							"value": "aa.zip",
 							"description": "下载文件名"
 						}
 					]
