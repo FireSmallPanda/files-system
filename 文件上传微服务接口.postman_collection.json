@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "964d6183-b79d-49f7-8a70-bd0029ef08f4",
+		"_postman_id": "77eeffb9-2fa2-4c93-a5c4-56f39d58f175",
 		"name": "文件上传微服务接口",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -421,7 +421,7 @@
 						},
 						{
 							"key": "Date",
-							"value": "Wed, 10 Oct 2018 14:32:17 GMT",
+							"value": "Fri, 05 Oct 2018 06:27:32 GMT",
 							"name": "Date",
 							"description": "The date and time that the message was sent"
 						},
@@ -485,7 +485,7 @@
 						},
 						{
 							"key": "Date",
-							"value": "Fri, 05 Oct 2018 06:27:32 GMT",
+							"value": "Wed, 10 Oct 2018 14:32:17 GMT",
 							"name": "Date",
 							"description": "The date and time that the message was sent"
 						},
@@ -517,7 +517,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{urls}}/file?path=/asd/aaa.jpg&name=asd.jpg",
+					"raw": "{{urls}}/file?path=/a/a.txt&name=asd.jpg",
 					"host": [
 						"{{urls}}"
 					],
@@ -527,7 +527,7 @@
 					"query": [
 						{
 							"key": "path",
-							"value": "/asd/aaa.jpg",
+							"value": "/a/a.txt",
 							"description": "相对路径"
 						},
 						{
@@ -1217,30 +1217,27 @@
 		},
 		{
 			"name": "打包下载文件(F0008)",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "formdata",
 					"formdata": [
 						{
 							"key": "urls",
-							"value": "a/a.txt$@$b/b.txt",
+							"value": "a/a.txt$@$b/b.txt$@$a/a.exe",
 							"description": "所需要的文件列表",
 							"type": "text"
 						},
 						{
 							"key": "names",
-							"value": "d.txt$@$c.txt",
+							"value": "d.txt$@$c.txt$@$下载的.exe",
 							"description": "文件下载本地名称",
 							"type": "text"
 						},
 						{
 							"key": "packageName",
-							"value": "aa包.rar",
+							"value": "aa包",
 							"description": "打包后的名字",
 							"type": "text"
 						}
