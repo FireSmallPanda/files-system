@@ -50,5 +50,5 @@ FILE-SYSTEM
         ossFile.js
 
 ```
-### 更新日志
-[中文](https://github.com/ElemeFE/element/blob/master/.github/CONTRIBUTING.zh-CN.md)
+### 相关文档
+更新日志(https://github.com/ElemeFE/element/blob/master/.github/CONTRIBUTING.zh-CN.md)
