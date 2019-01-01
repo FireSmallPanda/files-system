@@ -19,7 +19,7 @@ npm run oss
 ## 接口配置
 > nodeapi\files-api\config\文件上传微服务接口.postman_collection.json 用于导入postman生成接口
 
-### 文件上传接口
+### 目录结构
 
 ```
 FILE-SYSTEM
@@ -50,4 +50,5 @@ FILE-SYSTEM
         ossFile.js
 
 ```
-### Source files
+### 更新日志
+[中文](https://github.com/ElemeFE/element/blob/master/.github/CONTRIBUTING.zh-CN.md)

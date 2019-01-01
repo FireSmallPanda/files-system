@@ -84,13 +84,25 @@ exports.saveOneFile = (req, res) => {
                         throw err
                     }
                     let content = {}
-                    content.success = true
+                    
                     content.url = `${fields.document}/${ran}${extname}` // 即将删除
                     content.name = files.file.name
                     content.id = ranId
-                    dbUtil(content.id,content)
-                    res.writeHead(200, { 'Content-Type': 'application/json' })
-                    res.end(JSON.stringify(content))
+                    dbUtil.setObject(content.id,content,configs.RD_DB_NO.FILE,(dbFlag)=>{
+                        if(dbFlag){
+                            content.success = true
+                            res.writeHead(200, { 'Content-Type': 'application/json' })
+                            res.end(JSON.stringify(content))
+                        }else{
+                            content = {}
+                            content.success = false
+                            content.message = `${msgs.F_0007}`
+                            res.writeHead(200, { 'Content-Type': 'application/json' })
+                            res.end(JSON.stringify(content))
+                        }
+                    })
+                    
+                   
                 })
             }
 
@@ -201,13 +213,45 @@ exports.getFile = (req, res) => {
 
     let content = {}
     // 文件路径
-    let path = decodeURIComponent(configs.FILEPATH + form.path)   //encodeURI(configs.FILEPATH + form.path)
+    let path = decodeURIComponent(configs.FILEPATH + form.path)
+    //encodeURI(configs.FILEPATH + form.path)
     let name = form.name
+    if(form.path.indexOf('\\')==-1&&form.path.indexOf('/')==-1){
+     // 若是uuid则查询
+        dbUtil.getObject(form.path,configs.RD_DB_NO.FILE,(data)=>{
+            if(data){
+                // 重定url
+                path = `${configs.FILEPATH}${data.url}`
+                console.log(data)
+                getFiles(res,path,data.url,name) 
+            }else{
+                content = {}
+                content.success = false
+                content.message = `${msgs.F_0007}`
+                res.writeHead(200, { 'Content-Type': 'application/json' })
+                res.end(JSON.stringify(content))
+            }
+        }) 
+    }else{
+        getFiles(res,path,form.path,name) 
+    }
+     
+    
+}
+/**
+ * 获取文件通用类
+ * @param {Object} res 
+ * @param {String} path 
+ * @param {String} formPath 
+ * @param {String} name 
+ */
+let getFiles = (res,path,formPath,name)=>{
+    let content  = {}
     fs.exists(path, (exists) => {
         if (!exists) {
             // 若不存在则报错
             content.success = false
-            content.message = `${form.path}${msgs.F_0004}`
+            content.message = `${formPath}${msgs.F_0004}`
             res.writeHead(200, { 'Content-Type': 'application/json' })
             res.end(JSON.stringify(content))
             return
@@ -223,7 +267,6 @@ exports.getFile = (req, res) => {
         }
     })
 }
-
 /**
 - 查看文件夹是否存在 
 - @param req {Object} 输入请求
@@ -284,43 +327,82 @@ exports.getFilePackage = (req,res)=>{
     form.encoding = 'utf-8'
     form.parse(req, (err, fields, files, next) => {
         if (err) {
+            console.log(err)
             throw err
         }
         // 文件列表
-        let filesList = fields.urls.split(configs.FILE_SPLIT)
+        let filesList = []
         // 名字列表
         let nameList = fields.names.split(configs.FILE_SPLIT)
         // 随机数
         let ran = commonUtil.creatUUID()
-        
         // 创建一个新文件夹
-        mkdirs(`${configs.FILEPATH}${ran}/${fields.packageName}` ,(dirName)=>{
-            // console.log(dirName)
-            // if(dirName==null){
-            //     return
-            // }
-            copyFile(filesList,nameList,ran,fields.packageName,(retn)=>{
-                // 压缩参数
-                let param = {
-                    srcFilePath:`${configs.FILEPATH}${ran}`,
-                    zipFileName:`${fields.packageName}`,
-                    password:'123456' // 压缩密码
-                }
-                // 压缩
-                filesUtil.zip(param,(pakRetn)=>{
-                    let content = pakRetn
-                    if(pakRetn.success){
-                        // 替换掉默认路径
-                        content.path = '/'+content.path.replace(`${configs.FILEPATH}`,'')
-                        let ranid  =   commonUtil.creatUUID(4)
-                        content.id = ranid
-                    }
+        mkdirs(`${configs.FILEPATH}${ran}/${fields.packageName}`,(err,dirName)=>{
+            if(err){
+                console.log(err)
+                throw err
+            }
+            // 若是uuid则查询
+            dbUtil.getObject(fields.ids,configs.RD_DB_NO.FILE,(data)=>{
+                if(data){
+                    let fileObjects = data
+                    // 创建lilesList
+                    fileObjects.forEach((fileStringItem)=>{
+                        // 转义列表string
+                        let obj =  JSON.parse(fileStringItem)
+                        if(obj){
+                            filesList.push(obj.url)
+                        }
+                        
+                    })
+                    copyFile(filesList,nameList,ran,fields.packageName,(retn)=>{
+                        // 压缩参数
+                        let param = {
+                            srcFilePath:`${configs.FILEPATH}${ran}`,
+                            zipFileName:`${fields.packageName}`,
+                            password:'123456' // 压缩密码
+                        }
+                        // 压缩
+                        filesUtil.zip(param,(pakRetn)=>{
+                            let content = pakRetn
+                            if(pakRetn.url){
+                                // 替换掉默认路径
+                                content.url = '/'+content.url.replace(`${configs.FILEPATH}`,'')
+                                let ranid  =   commonUtil.creatUUID(4)
+                                content.id = ranid
+                                let name = `${fields.packageName}.zip`
+                                content.name = name
+                                dbUtil.setObject(content.id,content,configs.RD_DB_NO.FILE,(dbFlag)=>{
+                                    if(dbFlag){
+                                        delete content.url;//删除url
+                                        content.success = true
+                                        res.writeHead(200, { 'Content-Type': 'application/json' })
+                                        res.end(JSON.stringify(content))
+                                    }else{
+                                        content = {}
+                                        content.success = false
+                                        content.message = `${msgs.F_0007}`
+                                        res.writeHead(200, { 'Content-Type': 'application/json' })
+                                        res.end(JSON.stringify(content))
+                                    }
+                                })
+                            }else{
+                                res.writeHead(200, { 'Content-Type': 'application/json' })
+                                res.end(JSON.stringify(content))
+                            }
+                           
+                        })
+                        
+                    })
+                }else{
+                    let content = {}
+                    content.success = false
+                    content.message = `${msg.F_0008}`
                     res.writeHead(200, { 'Content-Type': 'application/json' })
                     res.end(JSON.stringify(content))
-                })
+                }
                 
-            })
-           
+            })  
         })        
     })
 }
@@ -343,8 +425,6 @@ let copyFile = (filesList,nameList,ran,fileName,callback) => {
 let readFile = (function (err, data) {
  
     if (err) return console.error(err)
-    
-    console.log(data)
     
    })
 /**
@@ -381,8 +461,5 @@ let deleteOneFile = (url,callback) =>{
     */
    let copyIt = (from, to,pakFlag=false) => {
     fs.writeFileSync(to, fs.readFileSync(from))
-    if(pakFlag){
-
-    }
    }
     

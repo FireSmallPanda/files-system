@@ -18,13 +18,11 @@ exports.zip = function(param,next){
     fs.exists(param.srcFilePath, function(exists) {  //判断路径是否存在
         if(exists) {
             let content = {
-                success:true,
-                path:`${param.srcFilePath}/${param.zipFileName}.zip`
+                url:`${param.srcFilePath}/${param.zipFileName}.zip`
             }
             exec(cdStr +" & "+ cdStr2+" & "+pakStr,next(content));
         } else {
             next({
-                success:false,
                 message:"源文件找不到"
             })
         }

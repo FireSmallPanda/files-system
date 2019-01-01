@@ -25,3 +25,6 @@ READMETEXT: 本微服务由小熊猫提供技术支持1020529941@qq.com
 RDS_IP: localhost
 RDS_PWD: 123456
 RDS_POT: 6379
+## redis db选取
+RD_DB_NO:
+  FILE: 8 ## 文件存入 8
