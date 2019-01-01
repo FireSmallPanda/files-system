@@ -51,4 +51,4 @@ FILE-SYSTEM
 
 ```
 ### 相关文档
-更新日志(https://github.com/FireSmallPanda/files-system/blob/master/doc/UPDATE_LOG_CN.md)
+[更新日志](https://github.com/FireSmallPanda/files-system/blob/master/doc/UPDATE_LOG_CN.md)

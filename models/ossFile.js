@@ -32,7 +32,6 @@ async function listDir(dir, callback) {
         prefix: dir,
         delimiter: "/"
     });
-    //  console.log(result)
     callback(result)
 }
 // 流式上传
@@ -59,7 +58,6 @@ async function deleteMulti(deleteList) {
         let result = await ossClient.deleteMulti(deleteList, {
             quiet: true
         });
-        console.log(result);
     } catch (e) {
         console.log(e);
     }
@@ -68,7 +66,6 @@ async function deleteMulti(deleteList) {
 async function getStream(path) {
     try {
         let result = await ossClient.getStream(path);
-        console.log(result);
         return result
     } catch (e) {
         console.log(e);
@@ -79,8 +76,6 @@ async function getBuffer(path, callback) {
     try {
         
         let result = await ossClient.get(path);
-      
-       /// console.log(result);
         callback(result.content)
     } catch (e) {
         console.log(e);
@@ -176,12 +171,6 @@ exports.getAllDocuments = (req, res) => {
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify(content));
         }
-        // result.prefixes.forEach(function (subDir) {
-        //     console.log('SubDir: %s', subDir);
-        // });
-        // result.objects.forEach(function (obj) {
-        //     console.log('Object: %s' + obj.name);
-        // });
     })
 
 }
@@ -217,7 +206,6 @@ exports.deleteDocument = (req, res) => {
         listDir(onlinePath, (result) => {
             if (result.objects != null) {
                 result.objects.forEach(function (obj) {
-                    console.log(obj.name)
                     objectList.push(obj.name)
                 });
             }

@@ -17,7 +17,6 @@ function mkdirs(dirname, callback) {
         if (exists) {
             callback();
         } else {
-            //console.log(path.dirname(dirname));
             mkdirs(path.dirname(dirname), function () {
                 fs.mkdir(dirname, callback);
             });
@@ -222,7 +221,6 @@ exports.getFile = (req, res) => {
             if(data){
                 // 重定url
                 path = `${configs.FILEPATH}${data.url}`
-                console.log(data)
                 getFiles(res,path,data.url,name) 
             }else{
                 content = {}
