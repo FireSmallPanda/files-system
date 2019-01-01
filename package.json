@@ -1,6 +1,6 @@
 {
   "name": "files-api",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "this is files api by panda",
   "main": "index.js",
   "dependencies": {
@@ -24,7 +24,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/FireSmallPanda/nodeapi.git"
+    "url": "https://github.com/FireSmallPanda/files-system.git"
   },
   "author": "xiaoxiongmao (1020529941@qq.com)",
   "license": "ISC"
