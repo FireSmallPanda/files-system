@@ -37,28 +37,19 @@ exports.getFile = (req, res) => {
 exports.deleteFile = (req, res) => {
     file.deleteFile(req, res)
 }
-// 删除文件
+// 打包文件
 exports.getFilePackage = (req, res) => {
     file.getFilePackage(req, res)
 }
-
+// 根据id获取文件
+exports.getFileById = (req, res) => {
+    file.getFile(req, res)
+}
 // 默认中间件
 exports.loadDefault = (req, res,next) => {
     
     // 1.查看文件夹是否存在
     Promise.all([file.checkDocumentAndCreat(req, res)]).then(()=>{
-        // process.on('uncaughtException', function (err) {
-        //     //打印出错误
-        //     console.log(err)
-        //     //打印出错误的调用栈方便调试
-        //     console.log(err.stack)
-        //     next()
-        // });
         next()
-        // try {
-        //     next()
-        // } catch (e) {
-        //     console.log(e);
-        // }
     })
 }

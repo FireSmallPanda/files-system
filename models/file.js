@@ -39,7 +39,9 @@ exports.saveOneFile = (req, res) => {
         let content = {}
         // 兼容模式
         if (configs.PATTERN === 'master') {
-            mkdirs(configs.FILEPATH + fields.document)
+            mkdirs(configs.FILEPATH + fields.document,()=>{
+
+            })
         }
         fs.exists(configs.FILEPATH + fields.document, (exists) => {
             if (!exists) {
@@ -155,7 +157,6 @@ exports.createDocument = (req, res) => {
         })
 
     })
-
 }
 // 删除文件夹及内容
 exports.deleteDocument = (req, res) => {
@@ -209,16 +210,25 @@ let deleteFolderRecursive = (path, callback) => {
 exports.getFile = (req, res) => {
     let uri = encodeURI(req.url)
     let form = url.parse(uri, true).query
-
     let content = {}
     // 文件路径
     let path = decodeURIComponent(configs.FILEPATH + form.path)
     //encodeURI(configs.FILEPATH + form.path)
     let name = form.name
-    if(form.path.indexOf('\\')==-1&&form.path.indexOf('/')==-1){
+    // 若有id参数则将 path 替换为id
+    if(req.params.id){
+        form.path = req.params.id
+    }else if(form.id){
+        form.path = form.id
+    }
+    if(!form.path||form.path.indexOf('\\')==-1&&form.path.indexOf('/')==-1){
      // 若是uuid则查询
         dbUtil.getObject(form.path,configs.RD_DB_NO.FILE,(data)=>{
             if(data){
+                // 若无名字则取数据库名字
+                if(!name){
+                    name = data.name
+                }
                 // 重定url
                 path = `${configs.FILEPATH}${data.url}`
                 getFiles(res,path,data.url,name) 
@@ -231,6 +241,7 @@ exports.getFile = (req, res) => {
             }
         }) 
     }else{
+        // 即将删除
         getFiles(res,path,form.path,name) 
     }
      
@@ -267,8 +278,8 @@ let getFiles = (res,path,formPath,name)=>{
 }
 /**
 - 查看文件夹是否存在 
-- @param req {Object} 输入请求
-- @param res {Object} 输出请求
+- @param  {Object} req 输入请求
+- @param  {Object} res 输出请求
 - @return 结果
 - @author weihao_ling<1020529941@qq.com>
 - @example
@@ -311,7 +322,9 @@ exports.deleteFile = (req,res) =>{
                 // 重定url
                 // 获取删除文件文件路径
                 let deleteUrl =  configs.FILEPATH + data.url
-                deleteOneFile(deleteUrl,(retn,msg)=>{
+                // 删除数据
+                dbUtil.delKey(fields.id,configs.RD_DB_NO.FILE,(retn)=>{
+                    deleteOneFile(deleteUrl,(retn,msg)=>{
                         let content = {}
                         content.success = retn
                         if(!retn){
@@ -319,10 +332,9 @@ exports.deleteFile = (req,res) =>{
                         }
                         res.writeHead(200, { 'Content-Type': 'application/json' })
                         res.end(JSON.stringify(content))
+                    })   
                 })
-                dbUtil.delKey(fields.id,(retn)=>{
-                    console.log('删除：'+retn)
-                })
+                             
             }else{
                 content = {}
                 content.success = false
@@ -437,11 +449,6 @@ let copyFile = (filesList,nameList,ran,fileName,callback) => {
     })
     callback(true)
 }
-let readFile = (function (err, data) {
- 
-    if (err) return console.error(err)
-    
-   })
 /**
 - 删除单个文件
 - @param url {String} 删除的文件路径

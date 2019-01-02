@@ -1,15 +1,21 @@
 
 // redis 链接
 var redis   = require('redis');
-var client  = redis.createClient('6379', '127.0.0.1');
-var RDS_PWD = '123456'
+let configUtil = require('../config/configUtil')
+let configs = configUtil.configObj
+var client  = redis.createClient(configs.RDS_POT, configs.RDS_IP);
+var RDS_PWD = configs.RDS_PWD
  // redis 链接错误
 client.auth(RDS_PWD, function(error) {
-    console.log(error);
+    if(error){
+        console.log(error)
+    }
 });
 // redis 链接错误
 client.on("error", function(error) {
-    console.log(error);
+    if(error){
+        console.log(error)
+    }
 });
 
 exports.setValue = (key,value)=>{
@@ -20,15 +26,19 @@ exports.setValue = (key,value)=>{
  */
 let connectionDB = ()=>{
     return new Promise(function(resolve,reject){
-        client  = redis.createClient('6379', '127.0.0.1');
+        client  = redis.createClient(configs.RDS_POT,configs.RDS_IP);
         
         // redis 链接错误
         client.on("error", function(error) {
-            console.log(error);
+            if(error){
+                console.log(error)
+            }
         });
          // redis 链接错误
         client.auth(RDS_PWD, function(error) {
-            console.log('password:'+error);
+            if(error){
+                console.log(error)
+            }
         });
         resolve(true)
     })
@@ -127,11 +137,11 @@ exports.delKey = (key,select=1,callBack) => {
     connectionDB().then(()=>{
         selectDB(select).then((flag)=>{
             if(key.indexOf(',')>-1){
-                
+                callBack(true)
             }else{
                 //先清除数据
-                client.del(key,function(retn) {
-                    callBack(retn)
+                client.del(key,function() {
+                    callBack(true)
                 })
             
             }

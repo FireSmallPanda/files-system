@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "cda1b7ee-2aaf-4719-8e77-8cfc585af8a7",
+		"_postman_id": "d6e55b92-c17e-4bb9-a5c2-72c9edb3d835",
 		"name": "文件上传微服务接口",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -40,7 +40,7 @@
 						},
 						{
 							"key": "document",
-							"value": "sa/sa/",
+							"value": "sa",
 							"description": "文件夹名称",
 							"type": "text"
 						}
@@ -58,6 +58,36 @@
 				"description": "2222"
 			},
 			"response": [
+				{
+					"name": "filesApi",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "localhost:3000",
+								"value": "url",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:3000",
+							"host": [
+								"localhost"
+							],
+							"port": "3000"
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				},
 				{
 					"name": "保存文件(F0002)",
 					"originalRequest": {
@@ -140,36 +170,6 @@
 					],
 					"cookie": [],
 					"body": "{\"success\":true,\"url\":\"D:/GitDou/asd/28494.msg\",\"name\":\"unins001.msg.msg\"}"
-				},
-				{
-					"name": "filesApi",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "localhost:3000",
-								"value": "url",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "localhost:3000",
-							"host": [
-								"localhost"
-							],
-							"port": "3000"
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "Text",
-					"header": [],
-					"cookie": [],
-					"body": ""
 				}
 			]
 		},
@@ -421,7 +421,7 @@
 						},
 						{
 							"key": "Date",
-							"value": "Fri, 05 Oct 2018 06:27:32 GMT",
+							"value": "Wed, 10 Oct 2018 14:32:17 GMT",
 							"name": "Date",
 							"description": "The date and time that the message was sent"
 						},
@@ -485,7 +485,7 @@
 						},
 						{
 							"key": "Date",
-							"value": "Wed, 10 Oct 2018 14:32:17 GMT",
+							"value": "Fri, 05 Oct 2018 06:27:32 GMT",
 							"name": "Date",
 							"description": "The date and time that the message was sent"
 						},
@@ -1141,9 +1141,9 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "url",
-							"value": "aaa/aaa.txt",
-							"description": "删除的文件路径",
+							"key": "id",
+							"value": "f0679f0ce0bb430b8d482c158e60040b",
+							"description": "删除id",
 							"type": "text"
 						}
 					]
@@ -1253,6 +1253,29 @@
 					]
 				},
 				"description": "打包下载文件"
+			},
+			"response": []
+		},
+		{
+			"name": "根据id获取文件(F0009)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{urls}}/files/0b69dad89d92461b821b07000603c2e3",
+					"host": [
+						"{{urls}}"
+					],
+					"path": [
+						"files",
+						"0b69dad89d92461b821b07000603c2e3"
+					]
+				},
+				"description": "根据id获取文件"
 			},
 			"response": []
 		}

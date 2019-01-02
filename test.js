@@ -95,11 +95,11 @@ exports.setObject = (key,obj,select=1,callBack) => {
 
 /**
  * 获取对象
- * @param {String} key 键  
+ * @param {String} key 键  (多个用,隔开)
  * @param {Number} select 库 
  * @param {Function} 回调 
  * */
-let getObject = (key,select=1,callBack) => {
+exports.getObject = (key,select=1,callBack) => {
   connectionDB().then(()=>{
       selectDB(select).then((flag)=>{
           if(key.indexOf(',')>-1){
@@ -111,16 +111,35 @@ let getObject = (key,select=1,callBack) => {
             getString2Object(key).then( function(response){
                 callBack(response)
             });
-             
           }
-          
       })
   })
 }
 
-// getObject('9917cbdadcde440faceac7182114383e,208a6b18cb384c9cbc831cc340ef27aa',8,(retn)=>{
-//   console.log(retn)
-// })
-getObject('9917cbdadcde440faceac7182114383e',8,(retn)=>{
-  console.log(retn)
+
+/**
+ * 删除key
+ * @param {String} key 键  (多个用,隔开)
+ * @param {Number} select 库 
+ * @param {Function} 回调 
+ * */
+let delKey = (key,select=1,callBack) => {
+    connectionDB().then(()=>{
+        selectDB(select).then((flag)=>{
+            if(key.indexOf(',')>-1){
+                
+            }else{
+                //先清除数据
+                client.del(key,function() {
+                    callBack(true)
+                })
+            
+            }
+        })
+    })
+}
+
+delKey('9ba01bab2d4b4551b292bb41e03748a5',8,()=>{
+    console.log(retn)
 })
+  
