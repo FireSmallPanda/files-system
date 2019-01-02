@@ -304,17 +304,34 @@ exports.deleteFile = (req,res) =>{
         if (err) {
             throw err
         }
-        // 获取删除文件文件路径
-        let deleteUrl =  configs.FILEPATH + fields.url
-        deleteOneFile(deleteUrl,(retn,msg)=>{
-                let content = {}
-                content.success = retn
-                if(!retn){
-                    content.message = msg
-                }
+        // 若是uuid则查询
+        dbUtil.getObject(fields.id,configs.RD_DB_NO.FILE,(data)=>{
+            // 判断数据是否存在
+            if(data){
+                // 重定url
+                // 获取删除文件文件路径
+                let deleteUrl =  configs.FILEPATH + data.url
+                deleteOneFile(deleteUrl,(retn,msg)=>{
+                        let content = {}
+                        content.success = retn
+                        if(!retn){
+                            content.message = msg
+                        }
+                        res.writeHead(200, { 'Content-Type': 'application/json' })
+                        res.end(JSON.stringify(content))
+                })
+                dbUtil.delKey(fields.id,(retn)=>{
+                    console.log('删除：'+retn)
+                })
+            }else{
+                content = {}
+                content.success = false
+                content.message = `${msgs.F_0007}`
                 res.writeHead(200, { 'Content-Type': 'application/json' })
                 res.end(JSON.stringify(content))
+            }
         })
+       
     })
     
 }

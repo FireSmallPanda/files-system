@@ -115,3 +115,27 @@ exports.getObject = (key,select=1,callBack) => {
       })
   })
 }
+
+
+/**
+ * 删除key
+ * @param {String} key 键  (多个用,隔开)
+ * @param {Number} select 库 
+ * @param {Function} 回调 
+ * */
+exports.delKey = (key,select=1,callBack) => {
+    connectionDB().then(()=>{
+        selectDB(select).then((flag)=>{
+            if(key.indexOf(',')>-1){
+                
+            }else{
+                //先清除数据
+                client.del(key,function(retn) {
+                    callBack(retn)
+                })
+            
+            }
+        })
+    })
+  }
+  
