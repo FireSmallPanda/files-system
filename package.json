@@ -1,6 +1,6 @@
 {
   "name": "files-api",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "this is files api by panda",
   "main": "index.js",
   "dependencies": {

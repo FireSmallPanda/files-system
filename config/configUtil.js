@@ -1,7 +1,8 @@
 const YAML = require('yamljs');
 const fs = require("fs");
+let settingObj = YAML.parse(fs.readFileSync(__dirname+"/settings.yml").toString());
 // 返回配置文件对象
-let configObj = YAML.parse(fs.readFileSync(__dirname+"/dev.yml").toString());
+let configObj = YAML.parse(fs.readFileSync(__dirname+"/settings/"+settingObj.USE_CONFIG+".yml").toString());
 exports.configObj = configObj;
 // 返回信息对象
 exports.msgObj = YAML.parse(fs.readFileSync(__dirname+"/msg.yml").toString());
