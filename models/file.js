@@ -87,8 +87,15 @@ exports.saveOneFile = (req, res) => {
                     let content = {}
                     
                     content.url = `${fields.document}/${ran}${extname}` // 即将删除
-                    content.name = files.file.name
+                    // 如果有名字就取名字若没有则取上传文件名字
+                    if(fields.name){
+                        content.name = `${fields.name}${extname}`
+                    }else{
+                        content.name = files.file.name
+                    }
                     content.id = ranId
+                    content.creatTime = new Date().getTime()
+                    content.type = 'file' // 文件类型
                     dbUtil.setObject(content.id,content,configs.RD_DB_NO.FILE,(dbFlag)=>{
                         if(dbFlag){
                             content.success = true
@@ -141,10 +148,26 @@ exports.createDocument = (req, res) => {
                     if (err) {
                         return console.error(err)
                     }
-                    // 创建成功
-                    content.success = true
-                    res.writeHead(200, { 'Content-Type': 'application/json' })
-                    res.end(JSON.stringify(content))
+                    // 随机id（存入数据库）
+                    let ranId = commonUtil.creatUUID(4)
+                    content.id = ranId
+                    content.url = fields.name
+                    content.creatTime = new Date().getTime()
+                    content.type = 'document' // 文件夹类型 
+                    // 保存数据库
+                    dbUtil.setObject(content.id,content,configs.RD_DB_NO.FILE,(dbFlag)=>{
+                        if(dbFlag){
+                            content.success = true
+                            res.writeHead(200, { 'Content-Type': 'application/json' })
+                            res.end(JSON.stringify(content))
+                        }else{
+                            content = {}
+                            content.success = false
+                            content.message = `${msgs.F_0007}`
+                            res.writeHead(200, { 'Content-Type': 'application/json' })
+                            res.end(JSON.stringify(content))
+                        }
+                    })
                 })
             } else {
                 // 若已经存在则报错
@@ -167,27 +190,51 @@ exports.deleteDocument = (req, res) => {
     let content = {}
 
     form.parse(req, (err, fields, files, next) => {
-        // 文件路径
-        let path = configs.FILEPATH + fields.name
-        fs.exists(path, (exists) => {
-            if (!exists) {
-                // 若不存在则报错
-                content.success = false
-                content.message = `${fields.name}${msgs.F_0003}`
-                res.writeHead(200, { 'Content-Type': 'application/json' })
-                res.end(JSON.stringify(content))
-                return
-            } else {
-                // 若存在则执行
-                deleteFolderRecursive(path, (retn) => {
-                    // 删除成功
-                    content.success = true
+        
+        dbUtil.getObject(fields.id,configs.RD_DB_NO.FILE,(data)=>{
+            console.log(data)
+            if(data){
+                if(data.type=='document'){
+                     // 文件路径
+                    let path = configs.FILEPATH + data.url
+                    fs.exists(path, (exists) => {
+                        if (!exists) {
+                            // 若不存在则报错
+                            content.success = false
+                            content.message = `${fields.name}${msgs.F_0003}`
+                            res.writeHead(200, { 'Content-Type': 'application/json' })
+                            res.end(JSON.stringify(content))
+                            return
+                        } else {
+                             // 删除数据
+                             dbUtil.delKey(fields.id,configs.RD_DB_NO.FILE,(retn)=>{
+                                // 若存在则执行
+                                deleteFolderRecursive(path, (retn) => {
+                                     // 删除成功
+                                    content.success = true
+                                    res.writeHead(200, { 'Content-Type': 'application/json' })
+                                    res.end(JSON.stringify(content)) 
+                                })
+                            })
+                        }
+                    })
+                }else{
+                    content = {}
+                    content.success = false
+                    content.message = `${msgs.F_0011}`
                     res.writeHead(200, { 'Content-Type': 'application/json' })
                     res.end(JSON.stringify(content))
-                })
-
+                }
+                
+            }else{
+                content = {}
+                content.success = false
+                content.message = `${msgs.F_0007}`
+                res.writeHead(200, { 'Content-Type': 'application/json' })
+                res.end(JSON.stringify(content))
             }
-        })
+        }) 
+       
     })
 }
 // 递归删除
@@ -225,13 +272,22 @@ exports.getFile = (req, res) => {
      // 若是uuid则查询
         dbUtil.getObject(form.path,configs.RD_DB_NO.FILE,(data)=>{
             if(data){
-                // 若无名字则取数据库名字
-                if(!name){
-                    name = data.name
+                if(data.type=='file'){
+                    // 若无名字则取数据库名字
+                    if(!name){
+                        name = data.name
+                    }
+                    // 重定url
+                    path = `${configs.FILEPATH}${data.url}`
+                    getFiles(res,path,data.url,name) 
+                }else{
+                    content = {}
+                    content.success = false
+                    content.message = `${msgs.F_0010}`
+                    res.writeHead(200, { 'Content-Type': 'application/json' })
+                    res.end(JSON.stringify(content))
                 }
-                // 重定url
-                path = `${configs.FILEPATH}${data.url}`
-                getFiles(res,path,data.url,name) 
+                
             }else{
                 content = {}
                 content.success = false
@@ -363,8 +419,8 @@ exports.getFilePackage = (req,res)=>{
         let nameList = fields.names.split(configs.FILE_SPLIT)
         // 随机数
         let ran = commonUtil.creatUUID()
-        // 创建一个新文件夹
-        mkdirs(`${configs.FILEPATH}${ran}/${fields.packageName}`,(err,dirName)=>{
+        // 创建一个新文件夹(在临时文件夹里)
+        mkdirs(`${configs.FILEPATH}${configs.TEMPORARY}/${ran}/${fields.packageName}`,(err,dirName)=>{
             if(err){
                 console.log(err)
                 throw err
@@ -373,19 +429,23 @@ exports.getFilePackage = (req,res)=>{
             dbUtil.getObject(fields.ids,configs.RD_DB_NO.FILE,(data)=>{
                 if(data){
                     let fileObjects = data
-                    // 创建lilesList
-                    fileObjects.forEach((fileStringItem)=>{
-                        // 转义列表string
-                        let obj =  JSON.parse(fileStringItem)
-                        if(obj){
-                            filesList.push(obj.url)
-                        }
-                        
-                    })
+                    if(fileObjects instanceof Array){
+                        // 创建lilesList
+                        fileObjects.forEach((fileStringItem)=>{
+                            // 转义列表string
+                            let obj =  JSON.parse(fileStringItem)
+                            if(obj){
+                                filesList.push(obj.url)
+                            }
+                        })
+                    }else{
+                        filesList.push(fileObjects.url)
+                    }
+                    
                     copyFile(filesList,nameList,ran,fields.packageName,(retn)=>{
                         // 压缩参数
                         let param = {
-                            srcFilePath:`${configs.FILEPATH}${ran}`,
+                            srcFilePath:`${configs.FILEPATH}${configs.TEMPORARY}/${ran}`,
                             zipFileName:`${fields.packageName}`,
                             password:'123456' // 压缩密码
                         }
@@ -399,6 +459,8 @@ exports.getFilePackage = (req,res)=>{
                                 content.id = ranid
                                 let name = `${fields.packageName}.zip`
                                 content.name = name
+                                content.creatTime = new Date().getTime()
+                                content.type = 'file' // 文件类型
                                 dbUtil.setObject(content.id,content,configs.RD_DB_NO.FILE,(dbFlag)=>{
                                     if(dbFlag){
                                         delete content.url;//删除url
@@ -424,7 +486,7 @@ exports.getFilePackage = (req,res)=>{
                 }else{
                     let content = {}
                     content.success = false
-                    content.message = `${msg.F_0008}`
+                    content.message = `${msgs.F_0008}`
                     res.writeHead(200, { 'Content-Type': 'application/json' })
                     res.end(JSON.stringify(content))
                 }
@@ -445,7 +507,7 @@ let copyFile = (filesList,nameList,ran,fileName,callback) => {
     // 循环拷贝文件夹到新文件夹里面去
     filesList.forEach((fileItem,index)=>{
             // 拷贝文件夹
-            copyIt(`${configs.FILEPATH}${fileItem}`,`${configs.FILEPATH}${ran}/${fileName}/${nameList[index]}`)
+            copyIt(`${configs.FILEPATH}${fileItem}`,`${configs.FILEPATH}${configs.TEMPORARY}/${ran}/${fileName}/${nameList[index]}`)
     })
     callback(true)
 }

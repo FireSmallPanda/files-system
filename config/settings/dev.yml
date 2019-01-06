@@ -12,6 +12,8 @@ FILEPATH: D:/fileUpload/
 FILESIZE: 1024000
 #模式 master 在保存文件时自动创建文件夹 guest 在保存文件时不自动创建文件夹
 PATTERN: master
+##临时文件保存路径
+TEMPORARY: temp039
 #OSS配置
 region: oss-cn-hangzhou
 accessKeyId: LTAI9IK4Il7RjnLH

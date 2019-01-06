@@ -3,6 +3,8 @@
  */
 var fs = require("fs");
 var exec = require('child_process').exec;
+let configUtil = require('../config/configUtil')
+let msgs = configUtil.msgObj
 /**
  * 压缩文件(Zip)
  * @param {Object} param  参数集合
@@ -23,7 +25,7 @@ exports.zip = function(param,next){
             exec(cdStr +" & "+ cdStr2+" & "+pakStr,next(content));
         } else {
             next({
-                message:"源文件找不到"
+                message:`${msgs.F_0009}`
             })
         }
     });

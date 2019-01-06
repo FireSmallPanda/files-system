@@ -112,7 +112,10 @@ exports.setObject = (key,obj,select=1,callBack) => {
 exports.getObject = (key,select=1,callBack) => {
   connectionDB().then(()=>{
       selectDB(select).then((flag)=>{
-          if(key.indexOf(',')>-1){
+          
+        if(!key){
+            callBack(null)
+        }else if(key.indexOf(',')>-1){
               let keys = key.split(',')
               client.mget( keys,function(err,response){
                 callBack(response)

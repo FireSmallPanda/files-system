@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d6e55b92-c17e-4bb9-a5c2-72c9edb3d835",
+		"_postman_id": "06ff16a4-8886-4c81-bb03-8a6028369f18",
 		"name": "文件上传微服务接口",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -43,6 +43,11 @@
 							"value": "sa",
 							"description": "文件夹名称",
 							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "文檔",
+							"type": "text"
 						}
 					]
 				},
@@ -59,77 +64,38 @@
 			},
 			"response": [
 				{
-					"name": "filesApi",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "localhost:3000",
-								"value": "url",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "localhost:3000",
-							"host": [
-								"localhost"
-							],
-							"port": "3000"
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "Text",
-					"header": [],
-					"cookie": [],
-					"body": ""
-				},
-				{
 					"name": "保存文件(F0002)",
 					"originalRequest": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/x-www-form-urlencoded"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
 								{
 									"key": "file",
 									"description": "上传文件",
-									"type": "file",
-									"src": null
+									"type": "file"
 								},
 								{
 									"key": "document",
-									"value": "asd",
-									"description": "保存文件夹名",
+									"value": "sa",
+									"description": "文件夹名称",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "文檔",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "localhost:3000/file?sda=fsdfsd",
+							"raw": "{{urls}}/file",
 							"host": [
-								"localhost"
+								"{{urls}}"
 							],
-							"port": "3000",
 							"path": [
 								"file"
-							],
-							"query": [
-								{
-									"key": "sda",
-									"value": "fsdfsd"
-								}
 							]
 						}
 					},
@@ -138,38 +104,40 @@
 					"_postman_previewlanguage": "json",
 					"header": [
 						{
-							"key": "Connection",
-							"value": "keep-alive",
-							"name": "Connection",
-							"description": "Options that are desired for the connection"
+							"key": "X-Powered-By",
+							"value": "3.2.1"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "X-Requested-With"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "PUT,POST,GET,DELETE,OPTIONS"
 						},
 						{
 							"key": "Content-Type",
-							"value": "application/json",
-							"name": "Content-Type",
-							"description": "The mime type of this content"
+							"value": "application/json"
 						},
 						{
 							"key": "Date",
-							"value": "Wed, 26 Sep 2018 14:56:30 GMT",
-							"name": "Date",
-							"description": "The date and time that the message was sent"
+							"value": "Sun, 06 Jan 2019 07:07:16 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
 						},
 						{
 							"key": "Transfer-Encoding",
-							"value": "chunked",
-							"name": "Transfer-Encoding",
-							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
-						},
-						{
-							"key": "X-Powered-By",
-							"value": "Express",
-							"name": "X-Powered-By",
-							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+							"value": "chunked"
 						}
 					],
 					"cookie": [],
-					"body": "{\"success\":true,\"url\":\"D:/GitDou/asd/28494.msg\",\"name\":\"unins001.msg.msg\"}"
+					"body": "{\n    \"url\": \"sa/b349c380118111e9951a2f65fd7a2ab5.docx\",\n    \"name\": \"文檔.docx\",\n    \"id\": \"9e672715e44246bea99f97810de7020a\",\n    \"creatTime\": 1546758436795,\n    \"success\": true\n}"
 				}
 			]
 		},
@@ -265,7 +233,7 @@
 					"formdata": [
 						{
 							"key": "name",
-							"value": "asddsf",
+							"value": "zzz阿瑟東",
 							"description": "文件夹名字",
 							"type": "text"
 						}
@@ -358,9 +326,9 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "name",
-							"value": "asd",
-							"description": "文件夹名字",
+							"key": "id",
+							"value": "f40e3c438cc048a88401e4a2a9e25f2a",
+							"description": "文件夹id",
 							"type": "text"
 						}
 					]
@@ -386,9 +354,9 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "name",
-									"value": "asda",
-									"description": "文件夹名字",
+									"key": "id",
+									"value": "f40e3c438cc048a88401e4a2a9e25f2a",
+									"description": "文件夹id",
 									"type": "text"
 								}
 							]
@@ -408,102 +376,40 @@
 					"_postman_previewlanguage": "json",
 					"header": [
 						{
-							"key": "Connection",
-							"value": "keep-alive",
-							"name": "Connection",
-							"description": "Options that are desired for the connection"
+							"key": "X-Powered-By",
+							"value": "3.2.1"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "X-Requested-With"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "PUT,POST,GET,DELETE,OPTIONS"
 						},
 						{
 							"key": "Content-Type",
-							"value": "application/json",
-							"name": "Content-Type",
-							"description": "The mime type of this content"
+							"value": "application/json"
 						},
 						{
 							"key": "Date",
-							"value": "Wed, 10 Oct 2018 14:32:17 GMT",
-							"name": "Date",
-							"description": "The date and time that the message was sent"
+							"value": "Sun, 06 Jan 2019 07:54:07 GMT"
 						},
-						{
-							"key": "Transfer-Encoding",
-							"value": "chunked",
-							"name": "Transfer-Encoding",
-							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
-						},
-						{
-							"key": "X-Powered-By",
-							"value": "Express",
-							"name": "X-Powered-By",
-							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
-						}
-					],
-					"cookie": [],
-					"body": "{\"success\":false,\"message\":\"asda文件夹不存在！请确定后执行！\"}"
-				},
-				{
-					"name": "删除文件夹(F0005)",
-					"originalRequest": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "name",
-									"value": "asda",
-									"description": "文件夹名字",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{urls}}/document",
-							"host": [
-								"{{urls}}"
-							],
-							"path": [
-								"document"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
 						{
 							"key": "Connection",
-							"value": "keep-alive",
-							"name": "Connection",
-							"description": "Options that are desired for the connection"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json",
-							"name": "Content-Type",
-							"description": "The mime type of this content"
-						},
-						{
-							"key": "Date",
-							"value": "Fri, 05 Oct 2018 06:27:32 GMT",
-							"name": "Date",
-							"description": "The date and time that the message was sent"
+							"value": "keep-alive"
 						},
 						{
 							"key": "Transfer-Encoding",
-							"value": "chunked",
-							"name": "Transfer-Encoding",
-							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
-						},
-						{
-							"key": "X-Powered-By",
-							"value": "Express",
-							"name": "X-Powered-By",
-							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+							"value": "chunked"
 						}
 					],
 					"cookie": [],
-					"body": "{\"success\":false,\"message\":\"asda文件夹不存在！请确定后执行！\"}"
+					"body": "{\n    \"success\": true\n}"
 				}
 			]
 		},
@@ -1224,14 +1130,14 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "urls",
-							"value": "a/a.txt$@$b/b.txt$@$a/a.exe",
+							"key": "ids",
+							"value": "f9b36974c6754364900c22ab62a14cce,f9b36974c6754364900c22ab62a14cce",
 							"description": "所需要的文件列表",
 							"type": "text"
 						},
 						{
 							"key": "names",
-							"value": "d.txt$@$c.txt$@$下载的.exe",
+							"value": "sa.md$@$ss.md",
 							"description": "文件下载本地名称",
 							"type": "text"
 						},
@@ -1266,13 +1172,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{urls}}/files/0b69dad89d92461b821b07000603c2e3",
+					"raw": "{{urls}}/files/f036307796384f1880c73922a7855d66",
 					"host": [
 						"{{urls}}"
 					],
 					"path": [
 						"files",
-						"0b69dad89d92461b821b07000603c2e3"
+						"f036307796384f1880c73922a7855d66"
 					]
 				},
 				"description": "根据id获取文件"
