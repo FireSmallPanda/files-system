@@ -14,10 +14,10 @@ npm run start
 npm run oss
 ```
 ## 配置
-> nodeapi\files-api\config\dev.yml 用于设置系统配置
+> files-system\config\settings\dev.yml 用于设置系统配置
 
 ## 接口配置
-> nodeapi\files-api\config\文件上传微服务接口.postman_collection.json 用于导入postman生成接口
+> files-system\doc\文件上传微服务接口.postman_collection.json 用于导入postman生成接口
 
 ### 目录结构
 
