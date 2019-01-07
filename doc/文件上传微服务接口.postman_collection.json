@@ -523,6 +523,153 @@
 			]
 		},
 		{
+			"name": "删除文件(F0007)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "f0679f0ce0bb430b8d482c158e60040b",
+							"description": "删除id",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{urls}}/file",
+					"host": [
+						"{{urls}}"
+					],
+					"path": [
+						"file"
+					]
+				},
+				"description": "aaa"
+			},
+			"response": [
+				{
+					"name": "删除文件(F0007)",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "url",
+									"value": "aaa/aaa.txt",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{urls}}/file",
+							"host": [
+								"{{urls}}"
+							],
+							"path": [
+								"file"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 14 Dec 2018 03:48:07 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"message\": \"该路径为文件夹路径,请输入文件路径!\"\n}"
+				}
+			]
+		},
+		{
+			"name": "打包下载文件(F0008)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "ids",
+							"value": "f9b36974c6754364900c22ab62a14cce,f9b36974c6754364900c22ab62a14cce",
+							"description": "所需要的文件列表",
+							"type": "text"
+						},
+						{
+							"key": "names",
+							"value": "sa.md$@$ss.md",
+							"description": "文件下载本地名称",
+							"type": "text"
+						},
+						{
+							"key": "packageName",
+							"value": "aa包",
+							"description": "打包后的名字",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{urls}}/files",
+					"host": [
+						"{{urls}}"
+					],
+					"path": [
+						"files"
+					]
+				},
+				"description": "打包下载文件"
+			},
+			"response": []
+		},
+		{
+			"name": "根据id获取文件(F0009)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{urls}}/files/f036307796384f1880c73922a7855d66",
+					"host": [
+						"{{urls}}"
+					],
+					"path": [
+						"files",
+						"f036307796384f1880c73922a7855d66"
+					]
+				},
+				"description": "根据id获取文件"
+			},
+			"response": []
+		},
+		{
 			"name": "api主页(OSS)(F1001)",
 			"request": {
 				"method": "GET",
@@ -1037,153 +1184,6 @@
 					"body": "本微服务由小熊猫提供技术支持1020529941@qq.com"
 				}
 			]
-		},
-		{
-			"name": "删除文件(F0007)",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "id",
-							"value": "f0679f0ce0bb430b8d482c158e60040b",
-							"description": "删除id",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "{{urls}}/file",
-					"host": [
-						"{{urls}}"
-					],
-					"path": [
-						"file"
-					]
-				},
-				"description": "aaa"
-			},
-			"response": [
-				{
-					"name": "删除文件(F0007)",
-					"originalRequest": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "url",
-									"value": "aaa/aaa.txt",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{urls}}/file",
-							"host": [
-								"{{urls}}"
-							],
-							"path": [
-								"file"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Powered-By",
-							"value": "Express"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Date",
-							"value": "Fri, 14 Dec 2018 03:48:07 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						},
-						{
-							"key": "Transfer-Encoding",
-							"value": "chunked"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"success\": false,\n    \"message\": \"该路径为文件夹路径,请输入文件路径!\"\n}"
-				}
-			]
-		},
-		{
-			"name": "打包下载文件(F0008)",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "ids",
-							"value": "f9b36974c6754364900c22ab62a14cce,f9b36974c6754364900c22ab62a14cce",
-							"description": "所需要的文件列表",
-							"type": "text"
-						},
-						{
-							"key": "names",
-							"value": "sa.md$@$ss.md",
-							"description": "文件下载本地名称",
-							"type": "text"
-						},
-						{
-							"key": "packageName",
-							"value": "aa包",
-							"description": "打包后的名字",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "{{urls}}/files",
-					"host": [
-						"{{urls}}"
-					],
-					"path": [
-						"files"
-					]
-				},
-				"description": "打包下载文件"
-			},
-			"response": []
-		},
-		{
-			"name": "根据id获取文件(F0009)",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "{{urls}}/files/f036307796384f1880c73922a7855d66",
-					"host": [
-						"{{urls}}"
-					],
-					"path": [
-						"files",
-						"f036307796384f1880c73922a7855d66"
-					]
-				},
-				"description": "根据id获取文件"
-			},
-			"response": []
 		}
 	]
 }
