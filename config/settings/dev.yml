@@ -14,6 +14,8 @@ FILESIZE: 1024000
 PATTERN: master
 ##临时文件保存路径
 TEMPORARY: temp039
+## 拷贝频率CRON
+COPYCRON: 30 * * * * * 
 #OSS配置
 region: oss-cn-hangzhou
 accessKeyId: LTAI9IK4Il7RjnLH

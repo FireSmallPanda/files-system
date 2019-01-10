@@ -1,3 +1,3 @@
 ##总配置
 #使用的config
-USE_CONFIG: local 
+USE_CONFIG: dev 
