@@ -45,6 +45,9 @@ exports.getFilePackage = (req, res) => {
 exports.getFileById = (req, res) => {
     file.getFile(req, res)
 }
+exports.keepFiles= () => {
+    file.keepFiles()
+}
 // 默认中间件
 exports.loadDefault = (req, res,next) => {
     

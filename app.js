@@ -42,7 +42,15 @@ app.post(`${apiName}/files`,router.getFilePackage)
 // 根据id获取文件 F0009
 app.get(`${apiName}/files/:id`,router.getFileById)
 
+
 console.log(`启动端口为：${configs.PORT}`)
+/**
+ * 是否开启自动备份
+ */
+router.keepFiles()
+console.log(`-----文件备份：${configs.KEEPFLAG?'ON':'OFF'}-----`)
+
+
 // 监听未捕获的异常
 process.on('uncaughtException',(err)=>{
     console.log(err)

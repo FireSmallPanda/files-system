@@ -1,0 +1,9 @@
+## 保存到文件夹
+FILES: [
+  ## {value: "D:/baseDao.txt" , name: 'xa.txt'},
+ ## {value: "D:/N-Tier内部测试机试题.doc" , name: '呵呵.doc'},
+ ## {value: "D:/工作/201605.rar" , name: '阿阿斯顿.rar'}
+  
+]
+## 保存到文件夹
+KEEPPATH: 'Z:/copy'

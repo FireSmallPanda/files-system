@@ -10,10 +10,14 @@ NAME: /files-api
 FILEPATH: D:/fileUpload/
 #文件大小
 FILESIZE: 1024000
-#模式 master 在保存文件时自动创建文件夹 guest 在保存文件时不自动创建文件夹
-PATTERN: master
+# 模式 master 在保存文件时自动创建文件夹 guest 在保存文件时不自动创建文件夹（暂时删除这个模式）
+##PATTERN: master
 ##临时文件保存路径
 TEMPORARY: temp039
+## 拷贝频率CRON http://cron.qqe2.com/ 在线生成
+COPYCRON: 0 * * * * ? 
+## 是否开启自动备份 add 增量备份 keep 替换备份 默认是 替换备份
+KEEPFLAG: true
 #OSS配置
 region: oss-cn-hangzhou
 accessKeyId: LTAI9IK4Il7RjnLH

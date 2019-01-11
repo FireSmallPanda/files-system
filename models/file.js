@@ -7,22 +7,12 @@ let configs = configUtil.configObj
 const fs = require('fs')
 let formidable = require('formidable')
 let msgs = configUtil.msgObj
-var url = require('url')
+let keepFilesObj = configUtil.keepFilesObj
+let url = require('url')
 let path = require('path')
-var Promise = require('promise')
-//创建目录结构
-//递归创建目录 异步方法
-function mkdirs(dirname, callback) {
-    fs.exists(dirname, function (exists) {
-        if (exists) {
-            callback();
-        } else {
-            mkdirs(path.dirname(dirname), function () {
-                fs.mkdir(dirname, callback);
-            });
-        }
-    });
-}
+let Promise = require('promise')
+let schedule = require('node-schedule');
+// 保存单个文件
 exports.saveOneFile = (req, res) => {
     // parse a file upload
     let form = new formidable.IncomingForm()
@@ -38,11 +28,10 @@ exports.saveOneFile = (req, res) => {
         // 返回参数
         let content = {}
         // 兼容模式
-        if (configs.PATTERN === 'master') {
-            mkdirs(configs.FILEPATH + fields.document,()=>{
-
-            })
-        }
+        // if (configs.PATTERN === 'master') {
+        //     mkdirs(configs.FILEPATH + fields.document,()=>{
+        //     })
+        // }
         fs.exists(configs.FILEPATH + fields.document, (exists) => {
             if (!exists) {
                 content.success = false
@@ -237,21 +226,6 @@ exports.deleteDocument = (req, res) => {
        
     })
 }
-// 递归删除
-let deleteFolderRecursive = (path, callback) => {
-    if (fs.existsSync(path)) {
-        fs.readdirSync(path).forEach(function (file) {
-            var curPath = `${path}/${file}`
-            if (fs.statSync(curPath).isDirectory()) { // recurse
-                deleteFolderRecursive(curPath)
-            } else { // delete file
-                fs.unlinkSync(curPath)
-            }
-        })
-        fs.rmdirSync(path)
-        callback(true)
-    }
-}
 
 // 获取文件
 exports.getFile = (req, res) => {
@@ -302,35 +276,6 @@ exports.getFile = (req, res) => {
     }
      
     
-}
-/**
- * 获取文件通用类
- * @param {Object} res 
- * @param {String} path 
- * @param {String} formPath 
- * @param {String} name 
- */
-let getFiles = (res,path,formPath,name)=>{
-    let content  = {}
-    fs.exists(path, (exists) => {
-        if (!exists) {
-            // 若不存在则报错
-            content.success = false
-            content.message = `${formPath}${msgs.F_0004}`
-            res.writeHead(200, { 'Content-Type': 'application/json' })
-            res.end(JSON.stringify(content))
-            return
-        } else {
-            
-            //第二种方式
-            var f = fs.createReadStream(path)
-            res.writeHead(200, {
-                'Content-Type': 'application/force-download',
-                'Content-Disposition': `attachment; filename=${name}`
-            })
-            f.pipe(res)
-        }
-    })
 }
 /**
 - 查看文件夹是否存在 
@@ -495,6 +440,99 @@ exports.getFilePackage = (req,res)=>{
         })        
     })
 }
+
+
+/**
+ * 备份文件
+ */
+exports.keepFiles =()=>{
+    // 判断是否备份文件
+    if(configs.KEEPFLAG){
+        let cron = configs.COPYCRON || '0 * * * * ?'
+        
+        
+        schedule.scheduleJob(cron, ()=>{
+            if(keepFilesObj.FILES.length>0&&keepFilesObj.KEEPPATH!=null&&keepFilesObj.KEEPPATH.length>0){
+                let startTime = new Date()
+                keepFilesObj.FILES.forEach((item,index)=>{
+                    // 拷贝文件夹
+                    copyIt(`${item.value}`,`${keepFilesObj.KEEPPATH}/${item.name}`)
+
+                })
+                let endTime = new Date()
+                let defTime  = commonUtil.getDateDiff(startTime,endTime,'second')
+                console.log('备份文件成功:' + new Date());
+                console.log(`备份耗时：${defTime}秒`);
+            }
+            
+        })
+    }
+}
+/** 
+ * 创建目录结构 递归创建目录 异步方法
+ * @param {String} dirname 创建的文件路径
+ * @param {Function} callback 回调
+ */
+function mkdirs(dirname, callback) {
+    fs.exists(dirname, function (exists) {
+        if (exists) {
+            callback();
+        } else {
+            mkdirs(path.dirname(dirname), function () {
+                fs.mkdir(dirname, callback);
+            });
+        }
+    });
+}
+/**
+ * 递归删除
+ * @param {String} path 删除的文件路径
+ * @param {Function} callback 回调
+ */
+let deleteFolderRecursive = (path, callback) => {
+    if (fs.existsSync(path)) {
+        fs.readdirSync(path).forEach(function (file) {
+            let curPath = `${path}/${file}`
+            if (fs.statSync(curPath).isDirectory()) { // recurse
+                deleteFolderRecursive(curPath)
+            } else { // delete file
+                fs.unlinkSync(curPath)
+            }
+        })
+        fs.rmdirSync(path)
+        callback(true)
+    }
+}
+
+/**
+ * 获取文件通用类
+ * @param {Object} res 
+ * @param {String} path 
+ * @param {String} formPath 
+ * @param {String} name 
+ */
+let getFiles = (res,path,formPath,name)=>{
+    let content  = {}
+    fs.exists(path, (exists) => {
+        if (!exists) {
+            // 若不存在则报错
+            content.success = false
+            content.message = `${formPath}${msgs.F_0004}`
+            res.writeHead(200, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify(content))
+            return
+        } else {
+            
+            //第二种方式
+            let f = fs.createReadStream(path)
+            res.writeHead(200, {
+                'Content-Type': 'application/force-download',
+                'Content-Disposition': `attachment; filename=${name}`
+            })
+            f.pipe(res)
+        }
+    })
+}
 /**
  * 拷贝多个文件
  * @param {List<String>} filesList 文件列表
@@ -521,7 +559,7 @@ let copyFile = (filesList,nameList,ran,fileName,callback) => {
   the aaa.txt is delete
 */
 let deleteOneFile = (url,callback) =>{
-        var files = [];
+        let files = [];
         //判断给定的路径是否存在
         if( fs.existsSync(url) ) {
             if(fs.statSync(url).isDirectory()) { // recurse

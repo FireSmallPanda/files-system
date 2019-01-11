@@ -6,6 +6,8 @@ let configObj = YAML.parse(fs.readFileSync(__dirname+"/settings/"+settingObj.USE
 exports.configObj = configObj;
 // 返回信息对象
 exports.msgObj = YAML.parse(fs.readFileSync(__dirname+"/msg.yml").toString());
+// 返回备份文件OBJ
+exports.keepFilesObj = YAML.parse(fs.readFileSync(__dirname+"/keepFiles.yml").toString());
 /**OSS部分 */
 // let OSS = require('ali-oss');
 // OSS链接
