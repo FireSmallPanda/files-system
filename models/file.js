@@ -242,18 +242,24 @@ exports.getFile = (req, res) => {
     }else if(form.id){
         form.path = form.id
     }
+    // 1.判断是否存在 2.判断是否为id
     if(!form.path||form.path.indexOf('\\')==-1&&form.path.indexOf('/')==-1){
      // 若是uuid则查询
         dbUtil.getObject(form.path,configs.RD_DB_NO.FILE,(data)=>{
             if(data){
+                // 判断是否为一个文件
                 if(data.type=='file'){
+                    // 重定url
+                    path = `${configs.FILEPATH}${data.url}`
                     // 若无名字则取数据库名字
                     if(!name){
                         name = data.name
+                        getFiles(res,path,data.url,name,true) 
+                    }else{
+                        getFiles(res,path,data.url,name) 
                     }
-                    // 重定url
-                    path = `${configs.FILEPATH}${data.url}`
-                    getFiles(res,path,data.url,name) 
+                    
+                    
                 }else{
                     content = {}
                     content.success = false
@@ -399,8 +405,8 @@ exports.getFilePackage = (req,res)=>{
                             let content = pakRetn
                             if(pakRetn.url){
                                 // 替换掉默认路径
-                                content.url = '/'+content.url.replace(`${configs.FILEPATH}`,'')
-                                let ranid  =   commonUtil.creatUUID(4)
+                                content.url = content.url.replace(`${configs.FILEPATH}`,'')
+                                let ranid  = commonUtil.creatUUID(4)
                                 content.id = ranid
                                 let name = `${fields.packageName}.zip`
                                 content.name = name
@@ -506,12 +512,13 @@ let deleteFolderRecursive = (path, callback) => {
 
 /**
  * 获取文件通用类
- * @param {Object} res 
- * @param {String} path 
- * @param {String} formPath 
- * @param {String} name 
+ * @param {Object} res 输出
+ * @param {String} path 文件路径(绝对)
+ * @param {String} formPath 文件路径(相对)
+ * @param {String} name 文件名字
+ * @param {boolean} uriFlag 是否需要进行转码 
  */
-let getFiles = (res,path,formPath,name)=>{
+let getFiles = (res,path,formPath,name,uriFlag = false)=>{
     let content  = {}
     fs.exists(path, (exists) => {
         if (!exists) {
@@ -522,9 +529,12 @@ let getFiles = (res,path,formPath,name)=>{
             res.end(JSON.stringify(content))
             return
         } else {
-            
             //第二种方式
             let f = fs.createReadStream(path)
+            // 若需要转码则转码
+            if(uriFlag){
+                name = encodeURIComponent(name)
+            }
             res.writeHead(200, {
                 'Content-Type': 'application/force-download',
                 'Content-Disposition': `attachment; filename=${name}`
