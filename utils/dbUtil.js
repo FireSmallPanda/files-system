@@ -65,19 +65,21 @@ let selectDB = (dbNo)=>{
  * 获取对象工具
  */
 let getString2Object = (key)=>{
-  return new Promise((resolve,reject)=>{
-    client.get(key,function(err,response){
-        if(err){
-            console.log(err)
-            client.end(false)
-            reject(false)
-        }
-        // 关闭链接
-        client.end(true)
-        resolve(JSON.parse(response))
-    });
-  })
-}
+    return new Promise((resolve,reject)=>{
+      client.get(key,function(err,response){
+          if(err){
+              console.log(err)
+              client.end(true)
+              reject(false)
+          }
+          
+          resolve(JSON.parse(response))
+          // 关闭链接
+         // client.end(false)
+      });
+    })
+  }
+  
 
 /**
  * 保存对象

@@ -3,6 +3,7 @@ let configUtil = require('../config/configUtil')
 let filesUtil = require('../utils/filesUtil')
 let commonUtil = require('../utils/commonUtil')
 let dbUtil = require('../utils/dbUtil')
+let returnUtil = require('../utils/returnUtil')
 let configs = configUtil.configObj
 const fs = require('fs')
 let formidable = require('formidable')
@@ -34,34 +35,24 @@ exports.saveOneFile = (req, res) => {
         // }
         fs.exists(configs.FILEPATH + fields.document, (exists) => {
             if (!exists) {
-                content.success = false
-                content.message = `${fields.document}${msgs.F_0001}`
-                res.writeHead(200, { 'Content-Type': 'application/json' })
-                res.end(JSON.stringify(content))
-                return
+                // 文件夹不存在报错
+                returnUtil.errorRetn(res,'F_0001',`${fields.document}${msgs.F_0001}`)
             } else {
-
                 let oldPath = files.file.path
                 // 判断尺寸
                 let size = files.file.size
-                if (size > configs.FILESIZE) { // 图片不可大于1M
-                    // res.JSON("图片不可大于2M");
+                // 图片不可大于 N M 此处为服务器端限制文件大小 应大于所调用该服务的所有使用端的文件大小
+                if (size > configs.FILESIZE) {
                     // 删除文件
                     fs.unlink(oldPath)
-
-                    content.success = false
-                    content.message = `文件不得超过${configs.FILESIZE / 1024000}MB`
-                    res.writeHead(200, { 'Content-Type': 'application/json' })
-                    res.end(JSON.stringify(content))
-
-                    return
+                    // 文件夹不存在报错
+                    returnUtil.errorRetn(res,null,`文件不得超过${configs.FILESIZE / 1024000}MB`)
                 }
                 // 改名
                 // 随机日期 
                 //  let date = sd.format(new Date(), 'YYYYMMDDHHmmss');
                 // 随机数
-                let ran = commonUtil.creatUUID() //  parseInt(Math.random() * 89999 + 10000);
-                // ran = ran.replaceAll("-","")
+                let ran = commonUtil.creatUUID()
                 // 随机id（存入数据库）
                 let ranId = commonUtil.creatUUID(4)
                 // 拓展名
@@ -91,11 +82,8 @@ exports.saveOneFile = (req, res) => {
                             res.writeHead(200, { 'Content-Type': 'application/json' })
                             res.end(JSON.stringify(content))
                         }else{
-                            content = {}
-                            content.success = false
-                            content.message = `${msgs.F_0007}`
-                            res.writeHead(200, { 'Content-Type': 'application/json' })
-                            res.end(JSON.stringify(content))
+                            // 数据库出错
+                            returnUtil.errorRetn(res,'F_0007')
                         }
                     })
                     
@@ -150,21 +138,14 @@ exports.createDocument = (req, res) => {
                             res.writeHead(200, { 'Content-Type': 'application/json' })
                             res.end(JSON.stringify(content))
                         }else{
-                            content = {}
-                            content.success = false
-                            content.message = `${msgs.F_0007}`
-                            res.writeHead(200, { 'Content-Type': 'application/json' })
-                            res.end(JSON.stringify(content))
+                             // 数据库出错
+                             returnUtil.errorRetn(res,'F_0007')
                         }
                     })
                 })
             } else {
-                // 若已经存在则报错
-                content.success = false
-                content.message = `${fields.name}${msgs.F_0002}`
-                res.writeHead(200, { 'Content-Type': 'application/json' })
-                res.end(JSON.stringify(content))
-                return
+                 // 若文件夹已经存在则报错
+                 returnUtil.errorRetn(res,'F_0002',`${fields.name}${msgs.F_0002}`)
             }
         })
 
@@ -181,19 +162,14 @@ exports.deleteDocument = (req, res) => {
     form.parse(req, (err, fields, files, next) => {
         
         dbUtil.getObject(fields.id,configs.RD_DB_NO.FILE,(data)=>{
-            console.log(data)
             if(data){
                 if(data.type=='document'){
                      // 文件路径
                     let path = configs.FILEPATH + data.url
                     fs.exists(path, (exists) => {
                         if (!exists) {
-                            // 若不存在则报错
-                            content.success = false
-                            content.message = `${fields.name}${msgs.F_0003}`
-                            res.writeHead(200, { 'Content-Type': 'application/json' })
-                            res.end(JSON.stringify(content))
-                            return
+                            // 若文件夹已经存在则报错
+                            returnUtil.errorRetn(res,'F_0003',`${fields.name}${msgs.F_0003}`)
                         } else {
                              // 删除数据
                              dbUtil.delKey(fields.id,configs.RD_DB_NO.FILE,(retn)=>{
@@ -208,19 +184,13 @@ exports.deleteDocument = (req, res) => {
                         }
                     })
                 }else{
-                    content = {}
-                    content.success = false
-                    content.message = `${msgs.F_0011}`
-                    res.writeHead(200, { 'Content-Type': 'application/json' })
-                    res.end(JSON.stringify(content))
+                    // 您所查询出的并不是一个文件夹
+                    returnUtil.errorRetn(res,'F_0011')
                 }
                 
             }else{
-                content = {}
-                content.success = false
-                content.message = `${msgs.F_0007}`
-                res.writeHead(200, { 'Content-Type': 'application/json' })
-                res.end(JSON.stringify(content))
+                // 数据库出错
+                returnUtil.errorRetn(res,'F_0007')
             }
         }) 
        
@@ -261,19 +231,12 @@ exports.getFile = (req, res) => {
                     
                     
                 }else{
-                    content = {}
-                    content.success = false
-                    content.message = `${msgs.F_0010}`
-                    res.writeHead(200, { 'Content-Type': 'application/json' })
-                    res.end(JSON.stringify(content))
+                    // 您所查询出的并不是一个文件
+                    returnUtil.errorRetn(res,'F_0010')
                 }
-                
             }else{
-                content = {}
-                content.success = false
-                content.message = `${msgs.F_0007}`
-                res.writeHead(200, { 'Content-Type': 'application/json' })
-                res.end(JSON.stringify(content))
+                // 数据库出错
+                returnUtil.errorRetn(res,'F_0007')
             }
         }) 
     }else{
@@ -343,11 +306,8 @@ exports.deleteFile = (req,res) =>{
                 })
                              
             }else{
-                content = {}
-                content.success = false
-                content.message = `${msgs.F_0007}`
-                res.writeHead(200, { 'Content-Type': 'application/json' })
-                res.end(JSON.stringify(content))
+                // 数据库出错
+                returnUtil.errorRetn(res,'F_0007')
             }
         })
        
@@ -419,11 +379,8 @@ exports.getFilePackage = (req,res)=>{
                                         res.writeHead(200, { 'Content-Type': 'application/json' })
                                         res.end(JSON.stringify(content))
                                     }else{
-                                        content = {}
-                                        content.success = false
-                                        content.message = `${msgs.F_0007}`
-                                        res.writeHead(200, { 'Content-Type': 'application/json' })
-                                        res.end(JSON.stringify(content))
+                                        // 数据库出错
+                                        returnUtil.errorRetn(res,'F_0007')
                                     }
                                 })
                             }else{
@@ -435,11 +392,8 @@ exports.getFilePackage = (req,res)=>{
                         
                     })
                 }else{
-                    let content = {}
-                    content.success = false
-                    content.message = `${msgs.F_0008}`
-                    res.writeHead(200, { 'Content-Type': 'application/json' })
-                    res.end(JSON.stringify(content))
+                    // 没有找到可打包文件
+                    returnUtil.errorRetn(res,'F_0008')
                 }
                 
             })  
@@ -522,12 +476,8 @@ let getFiles = (res,path,formPath,name,uriFlag = false)=>{
     let content  = {}
     fs.exists(path, (exists) => {
         if (!exists) {
-            // 若不存在则报错
-            content.success = false
-            content.message = `${formPath}${msgs.F_0004}`
-            res.writeHead(200, { 'Content-Type': 'application/json' })
-            res.end(JSON.stringify(content))
-            return
+            // 文件不存在本地磁盘中
+            returnUtil.errorRetn(res,'F_0004',`${formPath}${msgs.F_0004}`)
         } else {
             //第二种方式
             let f = fs.createReadStream(path)
