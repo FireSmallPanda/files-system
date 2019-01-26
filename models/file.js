@@ -428,6 +428,45 @@ exports.keepFiles =()=>{
         })
     }
 }
+/**
+ * 保存任务
+ */
+exports.saveMession = (req,res)=>{
+    // parse a file upload
+    let form = new formidable.IncomingForm()
+    //    Creates a new incoming form.
+    form.encoding = 'utf-8'
+    // If you want the files written to form.uploadDir to include the extensions of the original files, set this property to true
+    form.type = false
+    form.uploadDir = path.normalize(configs.FILEPATH)
+    form.parse(req, (err, fields, files, next) => {
+        let mession = {}
+        let id = ""
+        // 有id是更新没id是添加
+        if(fields.id){
+            id = fields.id
+            mession.updateTime = new Date().getTime()
+        }else{
+            id = commonUtil.creatUUID(4)
+            mession.creatTime = new Date().getTime()
+            mession.item = []
+        }
+        mession.id = id
+        mession.name = fields.name
+        mession.cron = fields.cron
+        dbUtil.setObject(id,mession,configs.RD_DB_NO.MESSION,(dbFlag)=>{
+            if(dbFlag){
+                let content = {}
+                content.success = true
+                res.writeHead(200, { 'Content-Type': 'application/json' })
+                res.end(JSON.stringify(content))
+            }else{
+                // 数据库出错
+                returnUtil.errorRetn(res,'F_0007')
+            }
+        })
+    })
+}
 /** 
  * 创建目录结构 递归创建目录 异步方法
  * @param {String} dirname 创建的文件路径

@@ -41,7 +41,8 @@ app.post(`${apiName}/files`,router.getFilePackage)
 
 // 根据id获取文件 F0009
 app.get(`${apiName}/files/:id`,router.getFileById)
-
+// 任务添加/修改 F0010
+app.post(`${apiName}/mession`,router.saveMession)
 
 console.log(`启动端口为：${configs.PORT}`)
 /**

@@ -48,6 +48,10 @@ exports.getFileById = (req, res) => {
 exports.keepFiles= () => {
     file.keepFiles()
 }
+// 保存/修改任务
+exports.saveMession = (req, res) => {
+    file.saveMession(req, res)
+}
 // 默认中间件
 exports.loadDefault = (req, res,next) => {
     
