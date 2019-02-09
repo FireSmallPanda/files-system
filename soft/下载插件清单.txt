@@ -1,0 +1,2 @@
+zip.exe https://www.cr173.com/soft/8574.html
+redis https://redis.io/download

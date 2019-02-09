@@ -93,7 +93,6 @@ exports.setObject = (key,obj,select=1,callBack) => {
         selectDB(select).then((flag)=>{
             client.set(key,JSON.stringify(obj),function(err,response){
                 if(err){
-                    console.log(err)
                     client.end(false)
                     callBack(false)
                 }
@@ -117,10 +116,16 @@ exports.getObject = (key,select=1,callBack) => {
           
         if(!key){
             callBack(null)
-        }else if(key.indexOf(',')>-1){
-              let keys = key.split(',')
-              client.mget( keys,function(err,response){
-                callBack(response)
+        }else if(Array.isArray(key)){
+              client.mget( key,function(err,response){
+                let retnList = []
+                // 若存在则遍历
+                if(response){
+                    response.forEach(responseItem=>{
+                        retnList.push(JSON.parse(responseItem))
+                    })
+                }
+                callBack(retnList)
               })
           }else{
             getString2Object(key).then( function(response){
@@ -153,4 +158,24 @@ exports.delKey = (key,select=1,callBack) => {
         })
     })
   }
-  
+  /**
+ * 获取某个库的所有key
+ * @param {string} key 键匹配
+ * @param {number} select 库
+ * @param {Function} callBack 回调
+ */
+exports.getKeysAll = (key='*',select=1,callBack) => {
+    connectionDB().then(()=>{
+        selectDB(select).then((flag)=>{
+            client.keys(key,(err,returns)=>{
+                if(err){
+                    callBack(false)
+                }else{
+                    callBack(returns)
+                }
+                
+            })
+            
+        })
+    })
+}

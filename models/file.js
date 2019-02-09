@@ -337,7 +337,7 @@ exports.getFilePackage = (req,res)=>{
                 throw err
             }
             // 若是uuid则查询
-            dbUtil.getObject(fields.ids,configs.RD_DB_NO.FILE,(data)=>{
+            dbUtil.getObject(fields.ids.join(","),configs.RD_DB_NO.FILE,(data)=>{
                 if(data){
                     let fileObjects = data
                     if(fileObjects instanceof Array){
@@ -446,26 +446,217 @@ exports.saveMession = (req,res)=>{
         if(fields.id){
             id = fields.id
             mession.updateTime = new Date().getTime()
+            mession.creatTime = fields.creatTime
         }else{
             id = commonUtil.creatUUID(4)
             mession.creatTime = new Date().getTime()
-            mession.item = []
+            mession.items = []
         }
         mession.id = id
-        mession.name = fields.name
-        mession.cron = fields.cron
-        dbUtil.setObject(id,mession,configs.RD_DB_NO.MESSION,(dbFlag)=>{
-            if(dbFlag){
+        mession.name = fields.name // 任务名称
+        mession.cron = fields.cron // 自动执行频率
+        mession.isAuto = fields.isAuto // 是否自动执行
+        mession.remark = fields.remark // 备注
+        saveMessionDB(id,mession,()=>{
+            let content = {}
+            content.success = true
+            content.id = id
+            res.writeHead(200, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify(content))
+        })
+        
+    })
+}
+/**
+ * 保存任务db操作
+ * @param {string} id 
+ * @param {Object} mession 
+ * @param {Function} callback 
+ */
+let saveMessionDB = (id,mession,callback)=>{
+    dbUtil.setObject(id,mession,configs.RD_DB_NO.MESSION,(dbFlag)=>{
+        if(dbFlag){
+            callback()
+        }else{
+            // 数据库出错
+            returnUtil.errorRetn(res,'F_0007')
+        }
+    })
+}
+/**
+ * 获取任务列表
+ */
+exports.getMession = (req,res)=>{
+    dbUtil.getKeysAll("*",configs.RD_DB_NO.MESSION,(retn)=>{
+        if(retn){
+            // 若是uuid则查询
+            dbUtil.getObject(retn,configs.RD_DB_NO.MESSION,(data)=>{
                 let content = {}
-                content.success = true
+                content.entries = data
+                // 记录数
+                content.total = data.length
+                // 筛选
+
                 res.writeHead(200, { 'Content-Type': 'application/json' })
                 res.end(JSON.stringify(content))
+            })
+        }else{
+            // 数据库出错
+            returnUtil.errorRetn(res,'F_0007')
+        }
+    })
+}
+/**
+ * 删除任务
+ */
+exports.delMession = (req,res)=>{
+    // 删除数据
+    dbUtil.delKey(req.params.id,configs.RD_DB_NO.MESSION,(retn)=>{
+        if(retn){
+            let content = {}
+            content.success = true
+            res.writeHead(200, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify(content))
+        }else{
+            // 数据库出错
+            returnUtil.errorRetn(res,'F_0007')
+        }
+    })
+
+}
+
+
+/**
+ * 保存任务项
+ */
+exports.saveMessionItem = (req,res)=>{
+     // parse a file upload
+     let form = new formidable.IncomingForm()
+     //    Creates a new incoming form.
+     form.encoding = 'utf-8'
+     form.parse(req, (err, fields, files, next) => {
+         let messionItem = {}
+         let id = ""
+         // 有id是更新没id是添加
+         if(fields.id){
+             id = fields.id
+             messionItem.updateTime = new Date().getTime()
+             messionItem.creatTime = fields.creatTime
+             
+         }else{
+             id = commonUtil.creatUUID(4)
+             messionItem.creatTime = new Date().getTime()
+         }
+         messionItem.id = id
+         messionItem.name = fields.name // 任务项名称
+         messionItem.value = fields.value // 任务项文件路径
+         messionItem.fileId = fields.fileId // 文件id
+         messionItem.remark = fields.remark // 备注
+         messionItem.isUse = fields.isUse // 是否使用
+         messionItem.messionId = fields.messionId // 任务id
+         dbUtil.setObject(id,messionItem,configs.RD_DB_NO.MESSION_ITEM,(dbFlag)=>{
+            // 若为修改成功则不需要修改任务相关内容 
+            if(fields.id&&dbFlag){
+                let content = {}
+                content.success = true
+                content.id = id
+                res.writeHead(200, { 'Content-Type': 'application/json' })
+                res.end(JSON.stringify(content))
+                return
+             }
+             // 若为添加则需要更改任务
+             if(dbFlag){
+                // 任务添加一个项
+                // 若是uuid则查询
+                dbUtil.getObject(fields.messionId,configs.RD_DB_NO.MESSION,(data)=>{
+                   
+                    if(data){
+                        data.items.push(id)
+                        // 保存修改后的任务
+                        saveMessionDB(data.id,data,()=>{
+                            let content = {}
+                            content.success = true
+                            content.id = id
+                            res.writeHead(200, { 'Content-Type': 'application/json' })
+                            res.end(JSON.stringify(content))
+                        })
+                    }else{
+                        // 您操作的任务不存在或任务被删除
+                        returnUtil.errorRetn(res,'F_0012')
+                    }
+                })
+             }else{
+                 // 数据库出错
+                 returnUtil.errorRetn(res,'F_0007')
+             }
+         })
+     })
+}
+// 获取任务下的任务项
+exports.getMessionItem  = (req,res)=>{
+       //  console.log(req.params.messionId)
+       // parse a file upload
+     let form = new formidable.IncomingForm()
+     //    Creates a new incoming form.
+     form.encoding = 'utf-8'
+     form.parse(req, (err, fields, files, next) => {
+        // 获取任务
+        dbUtil.getObject(fields.messionId,configs.RD_DB_NO.MESSION,(data)=>{
+                   
+            if(data){
+                // 获取任务项
+                dbUtil.getObject(data.items,configs.RD_DB_NO.MESSION_ITEM,(dataItems)=>{
+                    let content = {}
+                    content.entries  = dataItems
+                    content.total = dataItems.length
+                    res.writeHead(200, { 'Content-Type': 'application/json' })
+                    res.end(JSON.stringify(content))
+                })  
             }else{
-                // 数据库出错
-                returnUtil.errorRetn(res,'F_0007')
+                // 您操作的任务不存在或任务被删除
+                returnUtil.errorRetn(res,'F_0012')
             }
         })
-    })
+     })
+}
+// 删除任务项
+exports.delMessionItem =  (req,res)=>{
+    // 获取任务，现将任务中的该任务项目删除
+    dbUtil.getObject(req.params.id,configs.RD_DB_NO.MESSION_ITEM,(dataItem)=>{
+        if(dataItem){
+            // 任务删除一个项
+            // 若是uuid则查询
+            dbUtil.getObject(dataItem.messionId,configs.RD_DB_NO.MESSION,(data)=>{
+                commonUtil.removeByValue(data.items,req.params.id)
+                // 更新任务
+                dbUtil.setObject(data.id,data,configs.RD_DB_NO.MESSION,(dbFlag)=>{
+                    // 若为添加则需要更改任务
+                    if(dbFlag){
+                         // 删除数据(任务项)
+                        dbUtil.delKey(req.params.id,configs.RD_DB_NO.MESSION_ITEM,(retn)=>{
+                            if(retn){
+                                let content = {}
+                                content.success = true
+                                res.writeHead(200, { 'Content-Type': 'application/json' })
+                                res.end(JSON.stringify(content))
+                            }else{
+                                // 数据库出错(任务项删除失败)
+                                returnUtil.errorRetn(res,'F_0007')
+                            }
+                        })
+                    }else{
+                        // 数据库出错
+                        returnUtil.errorRetn(res,'F_0007')
+                    }
+
+                })
+                
+            })
+        }else{
+            // 您操作的任务项不存在或任务被删除
+            returnUtil.errorRetn(res,'F_0013')
+        }  
+     })
 }
 /** 
  * 创建目录结构 递归创建目录 异步方法

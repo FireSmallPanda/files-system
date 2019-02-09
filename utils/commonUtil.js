@@ -55,3 +55,16 @@ exports.getDateDiff = (startTime, endTime, diffType) => {
     }
     return parseInt((eTime.getTime() - sTime.getTime()) / parseInt(timeType));
 }
+/**
+ * 数组去除指定值
+ * @param {Array} arr 数组
+ * @param {string} val 指定值
+ */
+exports.removeByValue = (arr, val) => {
+       for(var i = 0; i < arr.length; i++) {
+        if(arr[i] == val) {
+         arr.splice(i, 1);
+         break;
+        }
+       }
+}

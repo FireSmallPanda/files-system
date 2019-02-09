@@ -33,3 +33,4 @@ RDS_POT: 6379
 RD_DB_NO:
   FILE: 8 ## 文件存入 8
   MESSION: 9 ## 任务数据库
+  MESSION_ITEM: 10 ## 任务项数据库

@@ -43,7 +43,18 @@ app.post(`${apiName}/files`,router.getFilePackage)
 app.get(`${apiName}/files/:id`,router.getFileById)
 // 任务添加/修改 F0010
 app.post(`${apiName}/mession`,router.saveMession)
-
+// 获取任务列表 F0011
+app.get(`${apiName}/mession`,router.getMession)
+// 获取任务列表 F0012
+app.delete(`${apiName}/mession/:id`,router.delMession)
+// 手动执行任务 F0013
+app.post(`${apiName}/mession/:id`,router.delMession)
+// 任务项添加/修改 F0014
+app.post(`${apiName}/messionItem`,router.saveMessionItem)
+// 任务下任务项查看 F0015
+app.get(`${apiName}/messionItem`,router.getMessionItem)
+// 删除任务项 F0016
+app.delete(`${apiName}/messionItem/:id`,router.delMessionItem)
 console.log(`启动端口为：${configs.PORT}`)
 /**
  * 是否开启自动备份

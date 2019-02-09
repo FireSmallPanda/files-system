@@ -52,6 +52,26 @@ exports.keepFiles= () => {
 exports.saveMession = (req, res) => {
     file.saveMession(req, res)
 }
+// 获取任务列表
+exports.getMession = (req,res) =>{
+    file.getMession(req, res)
+}
+
+exports.delMession = (req,res) =>{
+    file.delMession(req, res)
+}
+// 保存任务项
+exports.saveMessionItem = (req,res) =>{
+    file.saveMessionItem(req, res)
+}
+// 获取任务下的任务项
+exports.getMessionItem = (req,res) =>{
+    file.getMessionItem(req,res)
+}
+// 删除任务项
+exports.delMessionItem  = (req,res) =>{
+    file.delMessionItem(req,res)
+}
 // 默认中间件
 exports.loadDefault = (req, res,next) => {
     
