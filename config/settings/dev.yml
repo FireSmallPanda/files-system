@@ -17,9 +17,9 @@ TEMPORARY: temp039
 ## 拷贝频率CRON
 COPYCRON: 30 * * * * * 
 #OSS配置
-region: oss-cn-hangzhou
-accessKeyId: LTAI9IK4Il7RjnLH
-accessKeySecret: FC1n9gDWtezMFcjBMa0qEczTDGHu8k
+region:444
+accessKeyId: 444
+accessKeySecret: 444
 bucket: qq102
 #线上路径
 OSSFILEPATH: test
