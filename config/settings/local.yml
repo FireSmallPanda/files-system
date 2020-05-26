@@ -19,9 +19,9 @@ COPYCRON: 0 * * * * ?
 ## 是否开启自动备份 add 增量备份 keep 替换备份 默认是 替换备份
 KEEPFLAG: false
 #OSS配置
-region: oss-cn-hangzhou
-accessKeyId: LTAI9IK4Il7RjnLH
-accessKeySecret: FC1n9gDWtezMFcjBMa0qEczTDGHu8k
+region: xxx
+accessKeyId: xxx
+accessKeySecret: xxx
 bucket: qq102
 #线上路径
 OSSFILEPATH: test
